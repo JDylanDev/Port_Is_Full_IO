@@ -9,7 +9,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Work+Sans:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="icon" href="assets/favicon.ico">
     <link rel="stylesheet" href="styles.css" />
     <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400..700&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
 </head>
@@ -31,49 +32,187 @@
         </nav>
     </header>
     <main class="projectsPage">
-        <section class="collection">
-            <h3 class="collectionTitle">Solo Projects</h3>
-            <div class="collectionRow">
+        <!-- Library header / search -->
+        <div class="libHeader">
+            <div class="libHeaderTop">
+                <h2 class="libTitle"><i class="fa-solid fa-book-open-reader"></i> Project Archive</h2>
+                <div class="libSearch">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <input type="text" id="projectSearch" placeholder="Search projects..." aria-label="Search projects">
+                </div>
+            </div>
+            <div class="libActions">
+                <button type="button" class="libGameBtn" id="codeCrackerBtn" aria-label="Play Code Cracker minigame">
+                    <i class="fa-solid fa-gamepad"></i> Play a Game
+                </button>
+            </div>
+            <p class="libSubtitle">Browse my collection of solo adventures &amp; team collaborations</p>
+        </div>
+
+        <!-- SOLO PROJECTS SHELF -->
+        <section class="libShelf" data-section="solo">
+            <div class="shelfDivider">
+                <span class="shelfLabel"><i class="fa-solid fa-user"></i> Solo Projects</span>
+                <span class="shelfCount">3 projects</span>
+            </div>
+            <div class="shelfGrid">
                 <a href="project-name.html" class="projectCard">
+                    <div class="cardRibbon">Featured</div>
                     <div class="cardThumb">
-                        <!-- Drop an <img src="assets/..." alt=""> in here for a real thumbnail -->
-                        Project Vector
+                        <i class="fa-solid fa-cube"></i>
                     </div>
                     <h4>Project Vector</h4>
-                    <p>
-                        [Add a 2-3 sentence description here: what it is, what
-                        engine/language you built it in, and what you're
-                        proudest of.]
-                    </p>
+                    <p>A 2D platformer built in Godot with custom physics, procedural level generation, and a retro-wave aesthetic.</p>
                     <div class="techStack">
-                        <span>HTML</span>
-                        <span>CSS</span>
-                        <span>JavaScript</span>
+                        <span>Godot</span>
+                        <span>GDScript</span>
+                        <span>Aseprite</span>
                     </div>
                 </a>
-            </div>
-        </section>
-        <section class="collection">
-            <h3 class="collectionTitle">Team Projects</h3>
-            <div class="collectionRow">
+
                 <a href="project-name.html" class="projectCard">
                     <div class="cardThumb">
-                        Boys at the Back
+                        <i class="fa-solid fa-globe"></i>
                     </div>
-                    <h4>Boys at the Back</h4>
-                    <p>
-                        [Add a 2-3 sentence description here: what it is, your
-                        role on the team, and team size.]
-                    </p>
+                    <h4>Portfolio Website</h4>
+                    <p>This very site! A fully responsive portfolio with interactive skill trees, mini-games, and a library-style project archive.</p>
                     <div class="techStack">
                         <span>HTML</span>
                         <span>CSS</span>
                         <span>JavaScript</span>
                     </div>
                 </a>
+
+                <a href="project-name.html" class="projectCard">
+                    <div class="cardThumb">
+                        <i class="fa-solid fa-robot"></i>
+                    </div>
+                    <h4>Code Companion</h4>
+                    <p>A browser-based code editor with real-time preview, syntax highlighting, and collaborative editing features.</p>
+                    <div class="techStack">
+                        <span>React</span>
+                        <span>Node.js</span>
+                        <span>WebSocket</span>
+                    </div>
+                </a>
+
+                <a href="project-name.html" class="projectCard">
+                    <div class="cardThumb">
+                        <i class="fa-solid fa-music"></i>
+                    </div>
+                    <h4>Synth Wave</h4>
+                    <p>A Web Audio API synthesizer with oscilloscope visualization, sequencer, and MIDI controller support.</p>
+                    <div class="techStack">
+                        <span>HTML</span>
+                        <span>Canvas</span>
+                        <span>Web Audio</span>
+                    </div>
+                </a>
             </div>
         </section>
+
+        <!-- TEAM PROJECTS SHELF -->
+        <section class="libShelf" data-section="team">
+            <div class="shelfDivider">
+                <span class="shelfLabel"><i class="fa-solid fa-users"></i> Team Projects</span>
+                <span class="shelfCount">2 projects</span>
+            </div>
+            <div class="shelfGrid">
+                <a href="project-name.html" class="projectCard">
+                    <div class="cardRibbon cardRibbonOrange">Collab</div>
+                    <div class="cardThumb">
+                        <i class="fa-solid fa-chess-board"></i>
+                    </div>
+                    <h4>Boys at the Back</h4>
+                    <p>A tactical RPG with turn-based combat and a branching narrative. I handled combat system &amp; UI.</p>
+                    <div class="techStack">
+                        <span>Unity</span>
+                        <span>C#</span>
+                        <span>Photoshop</span>
+                    </div>
+                </a>
+
+                <a href="project-name.html" class="projectCard">
+                    <div class="cardThumb">
+                        <i class="fa-solid fa-cloud"></i>
+                    </div>
+                    <h4>Weather Watch</h4>
+                    <p>A weather dashboard built by a team of 4. I led the front-end while teammates handled the API integration and data pipeline.</p>
+                    <div class="techStack">
+                        <span>React</span>
+                        <span>D3.js</span>
+                        <span>REST API</span>
+                    </div>
+                </a>
+            </div>
+        </section>
+
+        <!-- Empty state (hidden by default) -->
+        <div class="libEmpty hidden" id="libEmpty">
+            <i class="fa-solid fa-book"></i>
+            <p>No projects match your search...</p>
+        </div>
     </main>
+    <div class="cometLayer">
+        <svg class="comet c1" viewBox="0 0 100 100" aria-hidden="true">
+            <path d="M50 0 C55 40 60 45 100 50 C60 55 55 60 50 100 C45 60 40 55 0 50 C40 45 45 40 50 0 Z" />
+        </svg>
+        <svg class="comet c2" viewBox="0 0 100 100" aria-hidden="true">
+            <path d="M50 0 C55 40 60 45 100 50 C60 55 55 60 50 100 C45 60 40 55 0 50 C40 45 45 40 50 0 Z" />
+        </svg>
+        <svg class="comet c3" viewBox="0 0 100 100" aria-hidden="true">
+            <path d="M50 0 C55 40 60 45 100 50 C60 55 55 60 50 100 C45 60 40 55 0 50 C40 45 45 40 50 0 Z" />
+        </svg>
+        <svg class="comet c4" viewBox="0 0 100 100" aria-hidden="true">
+            <path d="M50 0 C55 40 60 45 100 50 C60 55 55 60 50 100 C45 60 40 55 0 50 C40 45 45 40 50 0 Z" />
+        </svg>
+        <svg class="comet c5" viewBox="0 0 100 100" aria-hidden="true">
+            <path d="M50 0 C55 40 60 45 100 50 C60 55 55 60 50 100 C45 60 40 55 0 50 C40 45 45 40 50 0 Z" />
+        </svg>
+        <svg class="comet c6" viewBox="0 0 100 100" aria-hidden="true">
+            <path d="M50 0 C55 40 60 45 100 50 C60 55 55 60 50 100 C45 60 40 55 0 50 C40 45 45 40 50 0 Z" />
+        </svg>
+        <svg class="comet c7" viewBox="0 0 100 100" aria-hidden="true">
+            <path d="M50 0 C55 40 60 45 100 50 C60 55 55 60 50 100 C45 60 40 55 0 50 C40 45 45 40 50 0 Z" />
+        </svg>
+    </div>
+    <footer> 
+        <div class="footerButtons">
+            <button type="button" class="footerBtn" id="themeToggle" aria-label="Toggle dark/light mode">
+                <i class="fa-solid fa-moon"></i>
+            </button>
+            <button type="button" class="footerBtn" id="muteToggle" aria-label="Toggle mute">
+                <i class="fa-solid fa-volume-high"></i>
+            </button>
+            <button type="button" class="footerBtn" id="inspoBtn" aria-label="Inspirations &amp; credits">
+                <i class="fa-solid fa-heart"></i>
+            </button>
+        </div> 
+    </footer>
+
+    <!-- Inspirations / Credits Modal (draggable) -->
+    <div class="inspoModal" id="inspoModal">
+        <div class="inspoHandle" id="inspoHandle">
+            <span><i class="fa-solid fa-heart"></i> Inspirations &amp; Thanks</span>
+            <button type="button" class="inspoClose" id="inspoClose" aria-label="Close">&times;</button>
+        </div>
+        <div class="inspoBody">
+            <p>This portfolio was inspired by <strong>retro video games</strong>, <strong>sci-fi UIs</strong>, and the cozy aesthetic of <strong>Among Us</strong> crewmate screens.</p>
+            <hr>
+            <p><strong>Built with:</strong></p>
+            <ul>
+                <li><i class="fa-brands fa-html5"></i> HTML5</li>
+                <li><i class="fa-brands fa-css3-alt"></i> CSS3 (custom properties, animations)</li>
+                <li><i class="fa-brands fa-js"></i> Vanilla JavaScript (no frameworks!)</li>
+                <li><i class="fa-solid fa-font"></i> Fredoka &amp; Nunito from Google Fonts</li>
+                <li><i class="fa-solid fa-icons"></i> Font Awesome icons</li>
+            </ul>
+            <hr>
+            <p><strong>Special thanks to:</strong></p>
+            <p>All the open-source creators, game dev communities, and my teammates who made every project a joy to build.</p>
+            <p class="inspoSignoff">— Dylan</p>
+        </div>
+    </div>
     <script src="script.js"></script>
 </body>
 </html>

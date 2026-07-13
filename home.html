@@ -10,7 +10,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Work+Sans:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="styles.css" />
     <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400..700&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
 </head>
@@ -18,7 +18,7 @@
     <header> 
         <div class="logoContainer">
             <div class="imgContainer">
-                <img src="https://www.mamp.one/wp-content/uploads/2024/09/image-resources2.jpg"/>
+                <img src="https://www.mamp.one/wp-content/uploads/2024/09/image-resources2.jpg" alt="JDylanDev logo"/>
             </div>
             <div>
                 <h2>JDylanDev</h2>
@@ -45,7 +45,7 @@
         </section>
         <section class="infoSection">
             <div class="tabletFrame">
-            <div class="tabletScreen" data-tabgroup>
+            <div class="tabletScreen" data-tabgroup="home-tabs">
             <div class="buttonPanel">
                 <button type="button" data-tab="about">ABOUT ME</button>
                 <button type="button" data-tab="hobbies">HOBBIES</button>
@@ -124,10 +124,42 @@
         </svg>
     </div>
     <footer> 
-        <div class="buttons">
-            // Light/Dark Mode Toggle, Settings Button, References Button 
+        <div class="footerButtons">
+            <button type="button" class="footerBtn" id="themeToggle" aria-label="Toggle dark/light mode">
+                <i class="fa-solid fa-moon"></i>
+            </button>
+            <button type="button" class="footerBtn" id="muteToggle" aria-label="Toggle mute">
+                <i class="fa-solid fa-volume-high"></i>
+            </button>
+            <button type="button" class="footerBtn" id="inspoBtn" aria-label="Inspirations &amp; credits">
+                <i class="fa-solid fa-heart"></i>
+            </button>
         </div> 
     </footer>
+
+    <!-- Inspirations / Credits Modal (draggable) -->
+    <div class="inspoModal" id="inspoModal">
+        <div class="inspoHandle" id="inspoHandle">
+            <span><i class="fa-solid fa-heart"></i> Inspirations &amp; Thanks</span>
+            <button type="button" class="inspoClose" id="inspoClose" aria-label="Close">&times;</button>
+        </div>
+        <div class="inspoBody">
+            <p>This portfolio was inspired by <strong>retro video games</strong>, <strong>sci-fi UIs</strong>, and the cozy aesthetic of <strong>Among Us</strong> crewmate screens.</p>
+            <hr>
+            <p><strong>Built with:</strong></p>
+            <ul>
+                <li><i class="fa-brands fa-html5"></i> HTML5</li>
+                <li><i class="fa-brands fa-css3-alt"></i> CSS3 (custom properties, animations)</li>
+                <li><i class="fa-brands fa-js"></i> Vanilla JavaScript (no frameworks!)</li>
+                <li><i class="fa-solid fa-font"></i> Fredoka &amp; Nunito from Google Fonts</li>
+                <li><i class="fa-solid fa-icons"></i> Font Awesome icons</li>
+            </ul>
+            <hr>
+            <p><strong>Special thanks to:</strong></p>
+            <p>All the open-source creators, game dev communities, and my teammates who made every project a joy to build.</p>
+            <p class="inspoSignoff">— Dylan</p>
+        </div>
+    </div>
     <script src="script.js"></script>
 </body>
 </html>

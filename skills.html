@@ -9,7 +9,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Work+Sans:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="icon" href="assets/favicon.ico">
     <link rel="stylesheet" href="styles.css" />
     <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400..700&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
 </head>
@@ -17,7 +18,7 @@
     <header> 
         <div class="logoContainer">
             <div class="imgContainer">
-                <img src="https://www.mamp.one/wp-content/uploads/2024/09/image-resources2.jpg"/>
+                <img src="https://www.mamp.one/wp-content/uploads/2024/09/image-resources2.jpg" alt="JDylanDev logo"/>
             </div>
             <div>
                 <h2>JDylanDev</h2>
@@ -31,101 +32,135 @@
         </nav>
     </header>
     <main class="skillsPage">
-        <div class="skillSection" data-tabgroup>
+        <div class="skillSection" data-tabgroup="skills-tabs">
             <div class="skillCategoryBar">
                 <button type="button" data-tab="gamedev" class="active">2D Game Dev</button>
                 <button type="button" data-tab="webdev">Web Dev</button>
             </div>
 
-            <div class="skillMapWrapper">
-                <!-- 2D GAME DEV TREE ------------------------------------- -->
-                <div class="skillMap active" data-panel="gamedev">
-                    <div class="skillCenter">
-                        <div class="centerCore">
-                            <i class="fa-solid fa-user-astronaut"></i>
-                            <span>JDylanDev</span>
+            <div class="skillContent">
+                <div class="skillMapWrapper">
+                    <!-- 2D GAME DEV TREE ------------------------------------- -->
+                    <div class="skillMap active" data-panel="gamedev">
+                        <div class="skillCenter">
+                            <div class="centerCore">
+                                <i class="fa-solid fa-user-astronaut"></i>
+                                <span>JDylanDev</span>
+                            </div>
                         </div>
+                        <button type="button" class="skillNode" data-skill="godot" aria-label="Godot Engine">
+                            <i class="fa-solid fa-gamepad"></i>
+                        </button>
+                        <button type="button" class="skillNode" data-skill="gdscript" aria-label="GDScript">
+                            <i class="fa-solid fa-code"></i>
+                        </button>
+                        <button type="button" class="skillNode" data-skill="gamedesign" aria-label="Game Design">
+                            <i class="fa-solid fa-chess-knight"></i>
+                        </button>
+                        <button type="button" class="skillNode" data-skill="animation" aria-label="2D Animation">
+                            <i class="fa-solid fa-image"></i>
+                        </button>
                     </div>
-                    <button type="button" class="skillNode" aria-label="Godot Engine">
-                        <i class="fa-solid fa-gamepad"></i>
-                        <!-- Swap the <i> above for your own icon:
-                             <img src="assets/icons/skills/godot.svg" alt="Godot Engine"> -->
-                        <span class="skillBubble">
-                            <strong>Godot Engine</strong>
-                            [Placeholder: describe your experience with Godot]
-                        </span>
-                    </button>
 
-                    <button type="button" class="skillNode" aria-label="GDScript">
-                        <i class="fa-solid fa-code"></i>
-                        <span class="skillBubble">
-                            <strong>GDScript</strong>
-                            [Placeholder: describe your experience with GDScript]
-                        </span>
-                    </button>
-
-                    <button type="button" class="skillNode" aria-label="Game Design">
-                        <i class="fa-solid fa-chess-knight"></i>
-                        <span class="skillBubble">
-                            <strong>Game Design</strong>
-                            [Placeholder: describe your experience with game design]
-                        </span>
-                    </button>
-
-                    <button type="button" class="skillNode" aria-label="2D Animation">
-                        <i class="fa-solid fa-image"></i>
-                        <span class="skillBubble">
-                            <strong>2D Animation</strong>
-                            [Placeholder: describe your experience with sprites/animation]
-                        </span>
-                    </button>
-                    <!-- Add more <button class="skillNode"> entries here — the
-                         circle layout in script.js redistributes automatically -->
+                    <!-- WEB DEV TREE ------------------------------------------ -->
+                    <div class="skillMap" data-panel="webdev">
+                        <div class="skillCenter">
+                            <div class="centerCore">
+                                <i class="fa-solid fa-user-astronaut"></i>
+                                <span>JDylanDev</span>
+                            </div>
+                        </div>
+                        <button type="button" class="skillNode" data-skill="html" aria-label="HTML">
+                            <i class="fa-brands fa-html5"></i>
+                        </button>
+                        <button type="button" class="skillNode" data-skill="css" aria-label="CSS">
+                            <i class="fa-brands fa-css3-alt"></i>
+                        </button>
+                        <button type="button" class="skillNode" data-skill="javascript" aria-label="JavaScript">
+                            <i class="fa-brands fa-js"></i>
+                        </button>
+                        <button type="button" class="skillNode" data-skill="responsive" aria-label="Responsive Design">
+                            <i class="fa-solid fa-mobile-screen"></i>
+                        </button>
+                    </div>
                 </div>
 
-                <!-- WEB DEV TREE ------------------------------------------ -->
-                <div class="skillMap" data-panel="webdev">
-                    <div class="skillCenter">
-                        <div class="centerCore">
-                            <i class="fa-solid fa-user-astronaut"></i>
-                            <span>JDylanDev</span>
+                <!-- Info panel (shared, sits beside the skill map) -->
+                <div class="skillInfoPanel" id="skillInfoPanel">
+                    <div class="skillInfoHeader">
+                        <i class="fa-solid fa-circle-info"></i>
+                        <span>Skill Details</span>
+                    </div>
+                    <div class="skillInfoBody" id="skillInfoBody">
+                        <div class="skillInfoPlaceholder">
+                            <i class="fa-solid fa-hand-pointer"></i>
+                            <p>Click any skill node to learn more</p>
                         </div>
                     </div>
-                    <button type="button" class="skillNode" aria-label="HTML">
-                        <i class="fa-brands fa-html5"></i>
-                        <span class="skillBubble">
-                            <strong>HTML</strong>
-                            [Placeholder: describe your experience with HTML]
-                        </span>
-                    </button>
-
-                    <button type="button" class="skillNode" aria-label="CSS">
-                        <i class="fa-brands fa-css3-alt"></i>
-                        <span class="skillBubble">
-                            <strong>CSS</strong>
-                            [Placeholder: describe your experience with CSS]
-                        </span>
-                    </button>
-
-                    <button type="button" class="skillNode" aria-label="JavaScript">
-                        <i class="fa-brands fa-js"></i>
-                        <span class="skillBubble">
-                            <strong>JavaScript</strong>
-                            [Placeholder: describe your experience with JavaScript]
-                        </span>
-                    </button>
-
-                    <button type="button" class="skillNode" aria-label="Responsive Design">
-                        <i class="fa-solid fa-mobile-screen"></i>
-                        <span class="skillBubble">
-                            <strong>Responsive Design</strong>
-                            [Placeholder: describe your experience with responsive layouts]
-                        </span>
-                    </button>
                 </div>
             </div>
         </div>
     </main>
+    <div class="cometLayer">
+        <svg class="comet c1" viewBox="0 0 100 100" aria-hidden="true">
+            <path d="M50 0 C55 40 60 45 100 50 C60 55 55 60 50 100 C45 60 40 55 0 50 C40 45 45 40 50 0 Z" />
+        </svg>
+        <svg class="comet c2" viewBox="0 0 100 100" aria-hidden="true">
+            <path d="M50 0 C55 40 60 45 100 50 C60 55 55 60 50 100 C45 60 40 55 0 50 C40 45 45 40 50 0 Z" />
+        </svg>
+        <svg class="comet c3" viewBox="0 0 100 100" aria-hidden="true">
+            <path d="M50 0 C55 40 60 45 100 50 C60 55 55 60 50 100 C45 60 40 55 0 50 C40 45 45 40 50 0 Z" />
+        </svg>
+        <svg class="comet c4" viewBox="0 0 100 100" aria-hidden="true">
+            <path d="M50 0 C55 40 60 45 100 50 C60 55 55 60 50 100 C45 60 40 55 0 50 C40 45 45 40 50 0 Z" />
+        </svg>
+        <svg class="comet c5" viewBox="0 0 100 100" aria-hidden="true">
+            <path d="M50 0 C55 40 60 45 100 50 C60 55 55 60 50 100 C45 60 40 55 0 50 C40 45 45 40 50 0 Z" />
+        </svg>
+        <svg class="comet c6" viewBox="0 0 100 100" aria-hidden="true">
+            <path d="M50 0 C55 40 60 45 100 50 C60 55 55 60 50 100 C45 60 40 55 0 50 C40 45 45 40 50 0 Z" />
+        </svg>
+        <svg class="comet c7" viewBox="0 0 100 100" aria-hidden="true">
+            <path d="M50 0 C55 40 60 45 100 50 C60 55 55 60 50 100 C45 60 40 55 0 50 C40 45 45 40 50 0 Z" />
+        </svg>
+    </div>
+    <footer> 
+        <div class="footerButtons">
+            <button type="button" class="footerBtn" id="themeToggle" aria-label="Toggle dark/light mode">
+                <i class="fa-solid fa-moon"></i>
+            </button>
+            <button type="button" class="footerBtn" id="muteToggle" aria-label="Toggle mute">
+                <i class="fa-solid fa-volume-high"></i>
+            </button>
+            <button type="button" class="footerBtn" id="inspoBtn" aria-label="Inspirations &amp; credits">
+                <i class="fa-solid fa-heart"></i>
+            </button>
+        </div> 
+    </footer>
+
+    <!-- Inspirations / Credits Modal (draggable) -->
+    <div class="inspoModal" id="inspoModal">
+        <div class="inspoHandle" id="inspoHandle">
+            <span><i class="fa-solid fa-heart"></i> Inspirations &amp; Thanks</span>
+            <button type="button" class="inspoClose" id="inspoClose" aria-label="Close">&times;</button>
+        </div>
+        <div class="inspoBody">
+            <p>This portfolio was inspired by <strong>retro video games</strong>, <strong>sci-fi UIs</strong>, and the cozy aesthetic of <strong>Among Us</strong> crewmate screens.</p>
+            <hr>
+            <p><strong>Built with:</strong></p>
+            <ul>
+                <li><i class="fa-brands fa-html5"></i> HTML5</li>
+                <li><i class="fa-brands fa-css3-alt"></i> CSS3 (custom properties, animations)</li>
+                <li><i class="fa-brands fa-js"></i> Vanilla JavaScript (no frameworks!)</li>
+                <li><i class="fa-solid fa-font"></i> Fredoka &amp; Nunito from Google Fonts</li>
+                <li><i class="fa-solid fa-icons"></i> Font Awesome icons</li>
+            </ul>
+            <hr>
+            <p><strong>Special thanks to:</strong></p>
+            <p>All the open-source creators, game dev communities, and my teammates who made every project a joy to build.</p>
+            <p class="inspoSignoff">— Dylan</p>
+        </div>
+    </div>
     <script src="script.js"></script>
 </body>
 </html>
