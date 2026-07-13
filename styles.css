@@ -1,0 +1,877 @@
+:root {
+    /* Among Us crewmate palette, tuned for comfortable reading rather
+       than max-saturation screenshots. --primary-color is now used only
+       for accents/active-states, never as body text color. */
+    --primary-color: #4fe0cb;      /* softened cyan - accents only */
+    --text-color: #e7edf3;         /* body text - soft off-white, not neon */
+    --secondary-color: #9aa5b1;    /* muted grey for supporting text */
+    --bg-color: #10131a;           /* "the ship at night" black-navy */
+    --panel-color: #15181f;
+    --bezel-color: #52565f;        /* grey plastic tablet body */
+    --bezel-color-dark: #34373d;   /* bezel shadow/depth */
+    --trim-color: #c9c1b8;         /* cream trim ring between frame and screen */
+    --buttonpanel-color: #1d2330;  /* cool navy block behind the nav buttons, matches bg-color family */
+    --screen-color: #14171c;       /* near-black screen, not pure #000 */
+    --accent-red: #c51111;
+    --accent-blue: #132ed1;
+    --accent-green: #117f2d;
+    --accent-yellow: #f5f557;
+    --accent-pink: #ed54ba;
+    --accent-orange: #ef7d0d;
+    --outline-color: #05070b;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Nunito', sans-serif;
+}
+
+button, a, .projectCard, .skillNode, .tabletButton, .buttonPanel button, .skillCategoryBar button {
+    transition:
+        transform .2s,
+        background-color .2s,
+        color .2s,
+        border-color .2s,
+        box-shadow .2s;
+}
+
+h1, h2, h3, .buttonPanel button, .skillNode, nav a {
+    font-family: 'Fredoka', 'Nunito', sans-serif;
+}
+
+body {
+    background: var(--bg-color);
+    color: var(--text-color);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+.darkerText {
+    color: var(--secondary-color);
+}
+
+main {
+    flex: 1;
+    max-width: 900px;
+    margin: 0 auto;
+    width: min(92%, 900px);
+    gap: 3px;
+}
+
+header, footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    row-gap: 8px;
+
+    width: 100%;
+    min-height: 52px;
+
+    padding: 4px clamp(14px, 3vw, 32px);
+    background-color: rgb(0, 0, 0);
+    border-bottom: 4px solid var(--outline-color);
+}
+
+.logoContainer {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.imgContainer {
+    width: clamp(38px, 3vw, 42px);
+    height: clamp(38px, 3vw, 42px);
+    border-radius: 100%;
+    overflow: hidden;
+    flex-shrink: 0;
+}
+
+.imgContainer img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+nav {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: clamp(12px, 3vw, 50px);
+}
+
+nav a {
+    color: white;
+    text-decoration: none;
+    cursor: pointer;
+    font-weight: 600;
+
+    padding: 7px 16px;
+    border-radius: 999px;
+    border: 2px solid transparent;
+}
+
+nav a:hover {
+    border-color: var(--primary-color);
+}
+
+.activePage {
+    background: var(--primary-color);
+    color: black;
+    pointer-events: none;
+}
+
+.highlightName {
+    font-weight:bold;
+    color:var(--primary-color);
+    text-shadow:0 0 30px rgba(64,182,221,.69);
+}
+
+main, section {
+    display: flex;
+    flex-direction: column;
+}
+
+.heroSection {
+    display: flex;
+    gap: 20px;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.heroSection h3 {
+    font-size: clamp(24px, 3vw, 34px);
+    font-weight: normal;
+}
+
+.heroSection .heroSubtitle {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.infoSection {
+    display: flex;
+    gap: 0;
+    flex-direction: row;
+    align-items: stretch;
+}
+
+.tabContent {
+    display: none;
+}
+
+.tabContent.active {
+    display: block;
+}
+
+.tabletFrame {
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+    position: relative;
+
+    width: 100%;
+    background: var(--bezel-color-dark);
+    border: 3px solid var(--outline-color);
+    border-radius: 32px;
+    padding: 20px 64px 20px 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+}
+
+.tabletScreen {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    gap: 0;
+
+    background: var(--screen-color);
+    border: 8px solid var(--trim-color);
+    border-radius: 24px;
+    overflow: hidden;
+}
+
+.tabletButton {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    position: absolute;
+    right: 9px;
+    top: 50%;
+    transform: translateY(-50%);
+
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: white;
+    border: 4px solid var(--outline-color);
+    box-shadow: 0 0 16px rgba(0, 0, 0, 0.4);
+    cursor: pointer;
+    overflow: hidden;
+}
+
+.tabletButton img {
+    width: 70%;
+    height: 70%;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+.tabletButton:hover {
+    transform: translateY(-50%) scale(1.1);
+}
+
+.buttonPanel {
+    flex: 0 0 34%;
+    min-width: 0;
+    background: var(--buttonpanel-color);
+    color: var(--primary-color);
+    padding: 24px 20px;
+}
+
+.buttonPanel button {
+    display: block;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+
+    width: 100%;
+    margin: 16px 0;
+    padding: 11px;
+
+    border: 2px solid #ffffff;
+    border-radius: 999px; /* bean/pill shape, matches nav */
+
+    background: var(--screen-color);
+    color: white;
+
+    cursor: pointer;
+    text-align: center;
+    font-size: 15px;
+}
+
+.buttonPanel button:hover {
+    outline: 2px solid white;
+    transform: translateX(5px);
+    box-shadow: 0 0 50px rgba(88, 134, 160, 0.774);
+}
+
+.buttonPanel button.active {
+    background: var(--primary-color);
+    color: black;
+    border-color: var(--primary-color);
+}
+
+.infoPanel {
+    flex: 1 1 auto;
+    min-width: 0;
+    background: transparent;
+    padding: 16px;
+}
+
+.infoPanel h3 {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 20px;
+
+    font-size: 40px;
+    font-weight: bold;
+}
+
+.loadingScreen {
+    height: 100%;
+
+    display: flex;
+    flex-direction: column;
+
+    align-items: center;
+    justify-content: center;
+
+    font-size: 25px;
+}
+
+.loadingScreen span::after {
+    content: ".";
+    animation: loadingDots 3s infinite;
+}
+
+@keyframes loadingDots {
+    0% {
+        content: ".";
+    }
+    20% {
+        content: ". .";
+    }
+    40% {
+        content: ". . .";
+    }
+    60% {
+        content: ". . . .";
+    }
+    80% {
+        content: ". . . . .";
+    }
+    100% {
+        content: ".";
+    }
+}
+
+.loadingScreen.hidden {
+    display: none;
+}
+
+.skillsPage {
+    width: min(1200px, 95vw);
+    height: calc(100vh - 70px);
+    justify-content: flex-start;
+    overflow: hidden;
+}
+
+.skillSection {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 28px;
+}
+
+.skillCategoryBar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 20px;
+    width: 100%;
+}
+
+.skillCategoryBar button {
+    min-width: 170px;
+    padding: 15px 36px;
+    border-radius: 999px;
+    border: 2px solid var(--trim-color);
+    background: var(--screen-color);
+    color: var(--text-color);
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.skillCategoryBar button:hover {
+    border-color: var(--primary-color);
+}
+
+.skillCategoryBar button.active {
+    background: var(--primary-color);
+    color: black;
+    border-color: var(--primary-color);
+}
+
+.skillMapWrapper {
+    position: relative;
+    width: 100%;
+    max-width: 1000px;
+
+    flex: 1;
+    min-height: 450px;
+    height: auto;
+    max-height: 700px;
+    margin: auto;
+}
+
+.skillMap {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity 200ms ease;
+
+    background-color: #161b24; /* dark navy, matches bg-color/panel-color family */
+    background-image:
+        linear-gradient(rgba(201, 193, 184, 0.12) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(201, 193, 184, 0.12) 1px, transparent 1px);
+    background-size: 48px 48px;
+
+    border: 3px dashed var(--trim-color);
+    border-radius: 22px;
+    box-shadow: inset 0 0 60px rgba(0, 0, 0, 0.25);
+    padding: 40px;
+}
+
+.skillMap.active {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+}
+
+.skillCenter {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%,-50%);
+    z-index: 5;
+}
+
+.centerCore {
+    width: 140px;
+    height: 140px;
+    border-radius: 50%;
+
+    background: linear-gradient(145deg, var(--accent-blue), var(--screen-color));
+    border: 5px solid var(--primary-color);
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    box-shadow: 0 0 35px rgba(79,224,203,.35);
+    color:white;
+}
+
+.centerCore i {
+    font-size: 42px;
+    margin-bottom: 10px;
+}
+
+.centerCore span{
+    font-weight: bold;
+    font-size: 18px;
+}
+
+.skillNode {
+    width: 86px;
+    height: 86px;
+    border-radius: 100%;
+    background: var(--screen-color);
+    border: 3px solid var(--bezel-color-dark);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    cursor: grab;
+    user-select: none;
+    touch-action: none;
+    color: var(--primary-color);
+    font-size: 34px;
+
+    position: absolute;
+    transform: translate(-50%, -50%);
+}
+
+.skillNode.dragging {
+    cursor: grabbing;
+    z-index: 50;
+    transition: none;
+    box-shadow: 0 0 35px rgba(79, 224, 203, 0.7);
+}
+
+.skillNode:hover {
+    transform: translate(-50%, -50%) scale(1.12) rotate(8deg);
+    border-color: var(--primary-color);
+    box-shadow: 0 0 30px rgba(79, 224, 203, 0.6);
+}
+
+.skillBubble {
+    position: absolute;
+    left: 50%;
+    top: -16px;
+    transform: translateX(-50%) translateY(6px);
+
+    width: 250px;
+    background: var(--screen-color);
+    border: 2px solid var(--primary-color);
+    border-radius: 14px;
+    padding: 14px 18px;
+
+    font-size: 13px;
+    line-height: 1.5;
+    font-weight: normal;
+    color: var(--text-color);
+    text-align: left;
+    white-space: normal;
+
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity 150ms ease, transform 150ms ease;
+    z-index: 30;
+}
+
+.skillBubble::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    bottom: -16px;
+    transform: translateX(-50%);
+    border: 8px solid transparent;
+    border-top-color: var(--primary-color);
+}
+
+.skillBubble strong {
+    display: block;
+    color: var(--primary-color);
+    margin-bottom: 4px;
+}
+
+.skillNode:hover .skillBubble,
+.skillNode:focus-visible .skillBubble {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(-50%) translateY(0);
+}
+
+.projectsPage {
+    width: 95%;
+    margin: auto;
+    gap: 28px;
+}
+
+.collection {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.collectionTitle {
+    font-size: 22px;
+}
+
+.collectionRow {
+    display: flex;
+    gap: 18px;
+    overflow-x: auto;
+    padding: 14px 6px 16px 6px;
+    scroll-snap-type: x mandatory;
+}
+
+.collectionRow::-webkit-scrollbar {
+    height: 8px;
+}
+
+.collectionRow::-webkit-scrollbar-thumb {
+    background: var(--bezel-color-dark);
+    border-radius: 999px;
+}
+
+.projectCard {
+    flex: 0 0 215px;
+    scroll-snap-align: start;
+    background: var(--screen-color);
+    border: 3px solid var(--bezel-color-dark);
+    border-radius: 16px;
+    padding: 14px;
+    cursor: pointer;
+
+    text-decoration:none;
+    color:inherit;
+}
+
+.projectCard:hover {
+    border-color: var(--primary-color);
+    transform: scale(1.04);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+}
+
+.cardThumb {
+    width: 100%;
+    height: 105px;
+    background: var(--bezel-color-dark);
+    border-radius: 8px;
+    margin-bottom: 14px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: var(--secondary-color);
+    font-size: 12px;
+    overflow: hidden;
+}
+
+.cardThumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.projectCard h4 {
+    font-size: 18px;
+    margin-bottom: 8px;
+}
+
+.projectCard p {
+    color: var(--secondary-color);
+    font-size: 14px;
+    line-height: 1.6;
+    margin-bottom: 12px;
+}
+
+.techStack {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.techStack span {
+    padding: 6px 14px;
+    border-radius: 999px;
+    background: var(--primary-color);
+    color: black;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+@media (max-width: 820px) {
+    .tabletFrame {
+        flex-direction: column;
+        padding: 20px 20px 60px 20px;
+    }
+
+    .tabletScreen {
+        flex-direction: column;
+    }
+
+    .buttonPanel {
+        flex: 0 0 auto;
+    }
+
+    .tabletButton {
+        right: 50%;
+        top: auto;
+        bottom: 10px;
+        transform: translate(50%, 0);
+    }
+
+    .tabletButton:hover {
+        transform: translate(50%, 0) scale(1.1);
+    }
+
+    .skillMapWrapper {
+        height: 300px;
+    }
+
+    .heroSection h2 {
+        font-size: 34px;
+    }
+}
+
+.minigameOverlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.7);
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.minigameOverlay.open {
+    display: flex;
+}
+
+.minigameBox {
+    position: relative;
+    width: min(420px, 100%);
+    background: var(--screen-color);
+    border: 4px solid var(--primary-color);
+    border-radius: 24px;
+    padding: 30px;
+    text-align: center;
+    color: var(--text-color);
+}
+
+.minigameBox h3 {
+    font-size: 20px;
+    margin-bottom: 8px;
+}
+
+.minigameHint {
+    color: var(--secondary-color);
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.minigameClose {
+    position: absolute;
+    top: 12px;
+    right: 16px;
+    background: none;
+    border: none;
+    color: var(--text-color);
+    font-size: 24px;
+    cursor: pointer;
+    line-height: 1;
+}
+
+.wireRow {
+    display: flex;
+    justify-content: space-between;
+    margin: 30px 20px;
+}
+
+.wireColumn {
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+}
+
+.wireDot {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    border: 3px solid white;
+    cursor: pointer;
+    padding: 0;
+}
+
+.wireDot.selected {
+    outline: 3px solid white;
+    outline-offset: 2px;
+    transform: scale(1.15);
+}
+
+.wireDot.connected {
+    opacity: 0.35;
+    cursor: default;
+}
+
+.wireDot.wrong {
+    animation: wireShake 0.3s;
+}
+
+@keyframes wireShake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-4px); }
+    75% { transform: translateX(4px); }
+}
+
+.minigameSuccess {
+    display: none;
+    font-weight: bold;
+    color: var(--primary-color);
+    font-size: 18px;
+}
+
+.minigameSuccess.show {
+    display: block;
+}
+
+.cometLayer {
+    position:fixed;
+    inset:0;
+    overflow:hidden;
+    pointer-events:none;
+    z-index:-1;
+}
+
+.comet {
+    position:absolute;
+    width:40px;
+    height:40px;
+    color: white; /* change this to recolor every star at once */
+
+    filter:
+        drop-shadow(0 0 10px white)
+        drop-shadow(0 0 25px rgba(79,224,203,.8));
+
+    animation: cometRain linear infinite;
+}
+
+.comet path {
+    fill: currentColor;
+}
+
+@keyframes cometRain {
+
+    0% {
+        transform: translate(0, 0) rotate(-45deg);
+        opacity: 0;
+    }
+
+    10% {
+        opacity: 1;
+    }
+
+    85% {
+        opacity: 1;
+    }
+
+    100% {
+        transform: translate(0, 115vh) rotate(-45deg);
+        opacity: 0;
+    }
+
+}
+
+.c1 {
+    left:1%;
+    top:-8%;
+    animation-duration:5s;
+    animation-delay:0s;
+}
+
+.c2 {
+    left:24%;
+    top:-15%;
+    animation-duration:7s;
+    animation-delay:-2s;
+}
+
+.c3 {
+    left:41%;
+    top:-10%;
+    animation-duration:6s;
+    animation-delay:-3s;
+}
+
+.c4 {
+    left:58%;
+    top:-18%;
+    animation-duration:8s;
+    animation-delay:-1s;
+}
+
+.c5 {
+    left:76%;
+    top:-12%;
+    animation-duration:6.5s;
+    animation-delay:-4s;
+}
+
+.c6 {
+    left:90%;
+    top:-20%;
+    animation-duration:9s;
+    animation-delay:-5s;
+}
+
+.c7 {
+    left:15%;
+    top:-25%;
+    animation-duration:7.5s;
+    animation-delay:-6s;
+}
+
+button:focus-visible, a:focus-visible {
+    outline:3px solid var(--primary-color);
+    outline-offset:4px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation: none !important;
+        transition: none !important;
+    }
+}
