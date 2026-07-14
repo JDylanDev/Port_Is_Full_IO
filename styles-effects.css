@@ -1,8 +1,50 @@
 /* =========================================================
    JDylanDev — styles-effects.css
    Animations, particles, cursor effects, splash styles,
-   light mode overrides, media queries
+   light mode overrides, media queries, scrollbars
    ========================================================= */
+
+/* ===== MATRIX RAIN CANVAS (splash page background) ===== */
+#matrixRain {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    opacity: 0.55;
+    pointer-events: none;
+}
+
+/* ===== CUSTOM SCROLLBARS ===== */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--bg-color);
+    border: 1px solid var(--outline-color);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--bezel-color);
+    border-radius: 999px;
+    border: 2px solid var(--bg-color);
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--primary-color);
+}
+
+::-webkit-scrollbar-corner {
+    background: var(--bg-color);
+}
+
+/* Firefox scrollbar */
+* {
+    scrollbar-width: thin;
+    scrollbar-color: var(--bezel-color) var(--bg-color);
+}
 
 /* ===== KEYFRAME ANIMATIONS ===== */
 @keyframes loadingDots {
@@ -86,13 +128,13 @@
 .c13 { left:45%; top:-32%; animation-duration:6.5s; animation-delay:-5.0s; width:34px; height:34px; opacity:0.55; }
 .c14 { left:72%; top:-42%; animation-duration:9.5s; animation-delay:-2.5s; width:26px; height:26px; opacity:0.45; }
 
-/* ===== SCAN LINE OVERLAY (global retro CRT vibe) ===== */
+/* ===== GLOBAL SCAN LINE OVERLAY ===== */
 body::after {
     content: "";
     position: fixed;
     inset: 0;
     pointer-events: none;
-    z-index: 100;
+    z-index: 10;
     background: repeating-linear-gradient(
         0deg,
         transparent,
@@ -587,6 +629,169 @@ body.light-mode .enter-btn.show {
 @keyframes btnPulseLight {
     0%, 100% { box-shadow: 0 0 8px rgba(13, 148, 136, 0.15); }
     50% { box-shadow: 0 0 25px rgba(13, 148, 136, 0.3), 0 0 60px rgba(13, 148, 136, 0.08); }
+}
+
+/* ===== SPLASH DECORATIVE SIDE ANIMATIONS ===== */
+.splash-decor-left,
+.splash-decor-right {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    width: 80px;
+    pointer-events: none;
+    z-index: 50;
+    overflow: hidden;
+    opacity: 0;
+    animation: decorFadeIn 0.8s ease 2.5s forwards;
+}
+
+.splash-decor-left {
+    left: 0;
+}
+
+.splash-decor-right {
+    right: 0;
+}
+
+@keyframes decorFadeIn {
+    0% { opacity: 0; }
+    100% { opacity: 1; }
+}
+
+/* Vertical scanning beams */
+.decor-beam {
+    position: absolute;
+    width: 2px;
+    background: linear-gradient(
+        180deg,
+        transparent,
+        var(--primary-color),
+        transparent
+    );
+    opacity: 0.3;
+}
+
+.decor-beam-1 {
+    left: 20px;
+    top: 10%;
+    height: 80%;
+    animation: beamSweep 4s ease-in-out infinite;
+}
+
+.decor-beam-2 {
+    left: 45px;
+    top: 20%;
+    height: 60%;
+    animation: beamSweep 5s ease-in-out infinite 1s;
+}
+
+.decor-beam-3 {
+    right: 20px;
+    top: 15%;
+    height: 70%;
+    animation: beamSweep 4.5s ease-in-out infinite 0.5s;
+}
+
+.decor-beam-4 {
+    right: 50px;
+    top: 25%;
+    height: 50%;
+    animation: beamSweep 5.5s ease-in-out infinite 1.5s;
+}
+
+@keyframes beamSweep {
+    0%, 100% {
+        opacity: 0.1;
+        transform: scaleY(0.6);
+    }
+    50% {
+        opacity: 0.5;
+        transform: scaleY(1);
+    }
+}
+
+/* Pulsing data nodes */
+.decor-pulse {
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--primary-color);
+    box-shadow: 0 0 20px rgba(79, 224, 203, 0.6);
+    animation: decorPulse 3s ease-in-out infinite;
+}
+
+.splash-decor-left .decor-pulse {
+    bottom: 30%;
+    left: 30px;
+}
+
+.splash-decor-right .decor-pulse {
+    top: 40%;
+    right: 35px;
+}
+
+@keyframes decorPulse {
+    0%, 100% {
+        opacity: 0.2;
+        transform: scale(0.8);
+        box-shadow: 0 0 10px rgba(79, 224, 203, 0.3);
+    }
+    50% {
+        opacity: 1;
+        transform: scale(1.5);
+        box-shadow: 0 0 40px rgba(79, 224, 203, 0.8);
+    }
+}
+
+/* Flowing data streams (binary-like) on sides */
+.splash-decor-left::before,
+.splash-decor-left::after {
+    content: "01001 10110 01110";
+    position: absolute;
+    font-family: 'Courier New', monospace;
+    font-size: 10px;
+    color: var(--primary-color);
+    opacity: 0.15;
+    white-space: pre-wrap;
+    line-height: 1.8;
+    letter-spacing: 2px;
+    pointer-events: none;
+    animation: dataScroll 12s linear infinite;
+}
+
+.splash-decor-left::before {
+    top: -20%;
+    left: 8px;
+}
+
+.splash-decor-left::after {
+    content: "11010 00101 11100";
+    top: -40%;
+    left: 35px;
+    animation-delay: 4s;
+    opacity: 0.1;
+}
+
+.splash-decor-right::before {
+    content: "10110 01010 10011";
+    position: absolute;
+    top: -30%;
+    right: 10px;
+    font-family: 'Courier New', monospace;
+    font-size: 10px;
+    color: var(--primary-color);
+    opacity: 0.15;
+    white-space: pre-wrap;
+    line-height: 1.8;
+    letter-spacing: 2px;
+    pointer-events: none;
+    animation: dataScroll 14s linear infinite;
+}
+
+@keyframes dataScroll {
+    0% { transform: translateY(0); }
+    100% { transform: translateY(110vh); }
 }
 
 /* ===== RESPONSIVE ===== */

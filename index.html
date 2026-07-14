@@ -16,9 +16,24 @@
     <link rel="stylesheet" href="styles-effects.css" />
 </head>
 <body>
+    <!-- ===== SIDE DECORATIVE ANIMATIONS ===== -->
+    <div class="splash-decor-left" aria-hidden="true">
+        <div class="decor-beam decor-beam-1"></div>
+        <div class="decor-beam decor-beam-2"></div>
+        <div class="decor-pulse"></div>
+    </div>
+    <div class="splash-decor-right" aria-hidden="true">
+        <div class="decor-beam decor-beam-3"></div>
+        <div class="decor-beam decor-beam-4"></div>
+        <div class="decor-pulse"></div>
+    </div>
+
+    <!-- ===== DIGITAL RAIN CANVAS (Matrix-style background) ===== -->
+    <canvas id="matrixRain"></canvas>
+
     <!-- ===== SPLASH SCREEN ===== -->
     <div class="splash" id="splash">
-        <!-- HUD Rings -->
+        <!-- HUD Rings (slightly scaled down) -->
         <div class="hud-container">
             <div class="ring ring-1"></div>
             <div class="ring ring-2"></div>
@@ -58,7 +73,7 @@
         <!-- Brand -->
         <div class="splash-brand" id="splashBrand">
             <h1 data-text="JDylanDev">
-                <span class="brand-accent">JD</span>ylan<span class="brand-accent">Dev</span>
+                J<span class="brand-accent">Dylan</span><span class="brand-accent">Dev</span>
             </h1>
             <div class="brand-sub">Web Developer &bull; Game Developer</div>
         </div>
@@ -90,6 +105,54 @@
     <script src="script.js"></script>
     <script>
         (function() {
+            /* ===== MATRIX DIGITAL RAIN ===== */
+            const canvas = document.getElementById('matrixRain');
+            const ctx = canvas.getContext('2d');
+            
+            function resizeCanvas() {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+            }
+            resizeCanvas();
+            window.addEventListener('resize', resizeCanvas);
+
+            const chars = 'アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン0123456789<>/{}[]|&^%$#@!'.split('');
+            const fontSize = 12;
+            const columns = Math.floor(canvas.width / fontSize);
+            const drops = Array(columns).fill(1);
+
+            function drawRain() {
+                ctx.fillStyle = 'rgba(12, 15, 20, 0.05)';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+                ctx.font = fontSize + 'px monospace';
+                
+                for (let i = 0; i < drops.length; i++) {
+                    const char = chars[Math.floor(Math.random() * chars.length)];
+                    const x = i * fontSize;
+                    const y = drops[i] * fontSize;
+                    
+                    // Gradient from bright teal (top) to dim (bottom)
+                    const brightness = Math.max(0, 1 - (y / canvas.height) * 0.8);
+                    ctx.fillStyle = `rgba(79, 224, 203, ${brightness * 0.6})`;
+                    ctx.fillText(char, x, y);
+                    
+                    // Occasionally make a character brighter
+                    if (Math.random() > 0.98) {
+                        ctx.fillStyle = `rgba(79, 224, 203, ${brightness * 0.9})`;
+                        ctx.fillText(char, x, y);
+                    }
+
+                    if (y > canvas.height && Math.random() > 0.975) {
+                        drops[i] = 0;
+                    }
+                    drops[i]++;
+                }
+            }
+
+            setInterval(drawRain, 45);
+
+            /* ===== SPLASH ANIMATION SEQUENCE ===== */
             const splash = document.getElementById('splash');
             const lines = [
                 document.getElementById('line1'),

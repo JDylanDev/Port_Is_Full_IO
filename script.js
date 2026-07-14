@@ -385,6 +385,8 @@ function initInspoModal() {
 
 /* ---------------------------------------------------------
    PROJECT SEARCH / FILTER
+   Searches by title first, then description & tags.
+   Shows per-section empty states for solo & team.
    --------------------------------------------------------- */
 function initProjectSearch() {
   const input = document.getElementById("projectSearch");
@@ -392,24 +394,43 @@ function initProjectSearch() {
 
   input.addEventListener("input", () => {
     const q = input.value.toLowerCase().trim();
-    const cards = document.querySelectorAll(".projectCard");
-    let visibleCount = 0;
+    const shelves = document.querySelectorAll(".libShelf");
+    let totalVisible = 0;
 
-    cards.forEach((card) => {
-      const title = card.querySelector("h4")?.textContent?.toLowerCase() || "";
-      const desc = card.querySelector("p")?.textContent?.toLowerCase() || "";
-      const tags = Array.from(card.querySelectorAll(".techStack span"))
-        .map((s) => s.textContent.toLowerCase())
-        .join(" ");
+    shelves.forEach((shelf) => {
+      const cards = shelf.querySelectorAll(".projectCard");
+      const section = shelf.dataset.section;
+      let visible = 0;
 
-      const match = !q || title.includes(q) || desc.includes(q) || tags.includes(q);
-      card.style.display = match ? "" : "none";
-      if (match) visibleCount++;
+      cards.forEach((card) => {
+        const title = card.querySelector("h4")?.textContent?.toLowerCase() || "";
+        const desc = card.querySelector("p")?.textContent?.toLowerCase() || "";
+        const tags = Array.from(card.querySelectorAll(".techStack span"))
+          .map((s) => s.textContent.toLowerCase())
+          .join(" ");
+
+        // Match: title gets priority (weighted match), then desc/tags
+        const titleMatch = q && title.includes(q);
+        const otherMatch = q && (desc.includes(q) || tags.includes(q));
+        const match = !q || titleMatch || otherMatch;
+
+        card.style.display = match ? "" : "none";
+        if (match) visible++;
+      });
+
+      totalVisible += visible;
+
+      // Per-section empty state
+      const sectionEmpty = document.getElementById(`libEmpty${section.charAt(0).toUpperCase() + section.slice(1)}`);
+      if (sectionEmpty) {
+        sectionEmpty.classList.toggle("hidden", visible > 0 || !q);
+      }
     });
 
-    const empty = document.getElementById("libEmpty");
-    if (empty) {
-      empty.classList.toggle("hidden", visibleCount > 0);
+    // Global empty state (fallback)
+    const globalEmpty = document.getElementById("libEmpty");
+    if (globalEmpty) {
+      globalEmpty.classList.toggle("hidden", totalVisible > 0);
     }
   });
 }
