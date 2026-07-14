@@ -294,22 +294,88 @@ function initThemeToggle() {
 }
 
 /* ---------------------------------------------------------
-   MUTE / UNMUTE TOGGLE
+   MUTE / UNMUTE TOGGLE (with persistent audio playback)
    --------------------------------------------------------- */
 function initMuteToggle() {
   const btn = document.getElementById("muteToggle");
   if (!btn) return;
 
+  const audio = document.getElementById("bgMusic");
   let muted = localStorage.getItem("muted") === "true";
-  if (muted) btn.innerHTML = '<i class="fa-solid fa-volume-xmark"></i>';
+  let started = false;
 
-  btn.addEventListener("click", () => {
-    muted = !muted;
-    localStorage.setItem("muted", muted);
+  // Restore saved mute state
+  if (muted) {
+    btn.innerHTML = '<i class="fa-solid fa-volume-xmark"></i>';
+  }
+
+  function restoreAudioTime() {
+    if (!audio) return;
+    const savedTime = parseFloat(localStorage.getItem("musicTime"));
+    if (savedTime && !isNaN(savedTime) && savedTime < audio.duration) {
+      audio.currentTime = savedTime;
+    }
+  }
+
+  function applyMute() {
+    if (!audio) return;
+    audio.muted = muted;
     btn.innerHTML = muted
       ? '<i class="fa-solid fa-volume-xmark"></i>'
       : '<i class="fa-solid fa-volume-high"></i>';
+    localStorage.setItem("muted", muted);
+    localStorage.setItem("musicPlaying", muted ? "false" : "true");
+  }
+
+  function startAudio() {
+    if (started || !audio) return;
+    started = true;
+    audio.volume = 0.3;
+    audio.muted = muted;
+    restoreAudioTime();
+    audio.play().then(() => {
+      localStorage.setItem("musicPlaying", "true");
+    }).catch(() => {
+      // Browser may block autoplay — retry on next interaction
+      started = false;
+    });
+  }
+
+  btn.addEventListener("click", () => {
+    muted = !muted;
+    applyMute();
+    startAudio();
   });
+
+  // Save audio time & status on page unload (navigating to another page)
+  window.addEventListener("beforeunload", () => {
+    if (audio) {
+      localStorage.setItem("musicTime", audio.currentTime);
+      if (started) {
+        localStorage.setItem("musicPlaying", muted ? "false" : "true");
+      }
+    }
+  });
+
+  // Try to start audio on first user interaction anywhere
+  const tryStart = () => {
+    startAudio();
+  };
+  document.addEventListener("click", tryStart, { once: true });
+  document.addEventListener("keydown", tryStart, { once: true });
+  document.addEventListener("touchstart", tryStart, { once: true });
+
+  // Apply initial mute state
+  if (muted && audio) {
+    audio.muted = true;
+  }
+
+  // If music was playing before, immediately try to resume
+  const wasPlaying = localStorage.getItem("musicPlaying") === "true";
+  if (wasPlaying) {
+    // Short delay to let audio element be ready
+    setTimeout(startAudio, 400);
+  }
 }
 
 /* ---------------------------------------------------------
@@ -843,6 +909,17 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Project search
   initProjectSearch();
+
+  // Mark skills page as ready (fade-in to prevent flash)
+  const skillsPage = document.querySelector(".skillsPage");
+  if (skillsPage) {
+    // Wait for first layout + paint, then fade in
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        skillsPage.classList.add("ready");
+      });
+    });
+  }
 
   // Re-layout on resize
   window.addEventListener("resize", () => {

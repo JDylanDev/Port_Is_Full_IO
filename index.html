@@ -8,7 +8,6 @@
     <link rel="icon" href="assets/favicon.ico">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Work+Sans:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400..700&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="styles-base.css" />
@@ -45,28 +44,61 @@
         </div>
 
         <!-- Terminal Boot -->
-        <div class="terminal" id="terminal">
-            <div class="terminal-line" id="line1">
-                <span class="prompt">></span>
-                <span class="cmd">Initializing</span>
-                <span class="highlight-cmd">JDylanDev</span>
-                <span class="cmd">system...</span>
-                <span class="terminal-cursor"></span>
+        <div class="terminalRow">
+            <!-- Terminal side animations -->
+            <div class="terminalSide terminalSideLeft" aria-hidden="true">
+                <div class="sideBar bar1"></div>
+                <div class="sideBar bar2"></div>
+                <div class="sideBar bar3"></div>
+                <div class="sideBar bar4"></div>
+                <div class="sideBar bar5"></div>
+                <div class="sideBar bar6"></div>
+                <div class="sideBar bar7"></div>
+                <div class="sideBar bar8"></div>
+                <div class="sideDot dot1"></div>
+                <div class="sideDot dot2"></div>
+                <div class="sideLabel">SYS ACT</div>
             </div>
-            <div class="terminal-line" id="line2">
-                <span class="prompt">></span>
-                <span class="cmd">Loading portfolio modules...</span>
-                <span class="terminal-cursor"></span>
+
+            <div class="terminal" id="terminal">
+                <div class="terminal-line" id="line1">
+                    <span class="prompt">></span>
+                    <span class="cmd">Initializing</span>
+                    <span class="highlight-cmd">JDylanDev</span>
+                    <span class="cmd">system...</span>
+                    <span class="terminal-cursor"></span>
+                </div>
+                <div class="terminal-line" id="line2">
+                    <span class="prompt">></span>
+                    <span class="cmd">Loading portfolio modules...</span>
+                    <span class="terminal-cursor"></span>
+                </div>
+                <div class="terminal-line" id="line3">
+                    <span class="prompt">></span>
+                    <span class="cmd">Establishing secure connection...</span>
+                    <span class="terminal-cursor"></span>
+                </div>
+                <div class="terminal-line" id="line4">
+                    <span class="prompt">></span>
+                    <span class="success-text">System online. Ready.</span>
+                    <span class="terminal-cursor"></span>
+                </div>
             </div>
-            <div class="terminal-line" id="line3">
-                <span class="prompt">></span>
-                <span class="cmd">Establishing secure connection...</span>
-                <span class="terminal-cursor"></span>
-            </div>
-            <div class="terminal-line" id="line4">
-                <span class="prompt">></span>
-                <span class="success-text">System online. Ready.</span>
-                <span class="terminal-cursor"></span>
+
+            <div class="terminalSide terminalSideRight" aria-hidden="true">
+                <div class="hexStream">
+                    <span>7A</span> <span>3F</span> <span>1C</span>
+                    <span>B4</span> <span>8E</span> <span>2D</span>
+                    <span>F6</span> <span>09</span> <span>5A</span>
+                </div>
+                <div class="signalBars">
+                    <div class="sigBar sig1"></div>
+                    <div class="sigBar sig2"></div>
+                    <div class="sigBar sig3"></div>
+                    <div class="sigBar sig4"></div>
+                    <div class="sigBar sig5"></div>
+                </div>
+                <div class="sideLabel">NET UP</div>
             </div>
         </div>
 

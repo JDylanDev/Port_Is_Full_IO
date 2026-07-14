@@ -59,11 +59,31 @@ body.light-mode {
     --info-panel-bg: #e2e8f0;
 }
 
-* {
+*, *::before, *::after {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+}
+
+/* === TYPOGRAPHY SCALE === */
+body {
     font-family: 'Nunito', sans-serif;
+    font-weight: 400;
+    line-height: 1.6;
+}
+
+h1, h2, h3, h4, h5, h6,
+.buttonPanel button,
+.skillNode, nav a,
+.libTitle, .shelfLabel,
+.skillInfoHeader, .skillInfoName,
+.loadingScreen, .inspoHandle, .inspoSignoff,
+.minigameBox h3, .quizQuestion,
+.enter-btn, .minigameNewGame, .crackerNewGame,
+.minigameSuccess, .quizScore, .quizNext,
+.minigameScore span, .crackerMoves, .libGameBtn,
+.centerCore span {
+    font-family: 'Fredoka', 'Nunito', sans-serif;
 }
 
 button, a, .projectCard, .skillNode, .tabletButton, .buttonPanel button, .skillCategoryBar button {
@@ -75,10 +95,6 @@ button, a, .projectCard, .skillNode, .tabletButton, .buttonPanel button, .skillC
         box-shadow .2s;
 }
 
-h1, h2, h3, .buttonPanel button, .skillNode, nav a {
-    font-family: 'Fredoka', 'Nunito', sans-serif;
-}
-
 body {
     background: var(--bg-color);
     color: var(--text-color);
@@ -87,17 +103,32 @@ body {
     flex-direction: column;
     overflow-x: hidden;
     overflow-y: auto;
-    zoom: 0.9;
 }
 
-/* ===== GLOBAL CURSOR: ALWAYS POINTER ===== */
-html, body, button, a, label, select, summary, details, [role="button"], .projectCard, .skillNode, .footerBtn, .tabletButton, .buttonPanel button, .skillCategoryBar button, .enter-btn, .tabContent, nav a, .libGameBtn, .wireDot, .crackerTile, .quizOption, .minigameNewGame, .crackerNewGame, .inspoClose, .centerCore {
-    cursor: pointer !important;
+/* ===== GLOBAL CURSOR: DEFAULT (only grab on draggable skill nodes) ===== */
+html {
+    overflow-y: scroll;
 }
 
-/* Only text inputs and textareas keep the I-beam cursor for usability */
+html, body {
+    cursor: default;
+}
+
+button, a, label, select, summary, details, [role="button"], .projectCard, .footerBtn, .tabletButton, .buttonPanel button, .skillCategoryBar button, .enter-btn, nav a, .libGameBtn, .wireDot, .crackerTile, .quizOption, .minigameNewGame, .crackerNewGame, .inspoClose, .centerCore {
+    cursor: pointer;
+}
+
+.skillNode {
+    cursor: grab;
+}
+
+.skillNode.dragging {
+    cursor: grabbing;
+}
+
+/* Text inputs keep the I-beam cursor for usability */
 input[type="text"], input[type="search"], input[type="email"], input[type="url"], input[type="password"], textarea, [contenteditable="true"] {
-    cursor: text !important;
+    cursor: text;
 }
 
 .darkerText {
@@ -108,8 +139,10 @@ main {
     flex: 1;
     max-width: 900px;
     margin: 0 auto;
-    width: min(92%, 900px);
-    gap: 3px;
+    width: min(92%, 960px);
+    gap: 24px;
+    padding-top: 24px;
+    padding-bottom: 32px;
 }
 
 header {
@@ -120,9 +153,9 @@ header {
     row-gap: 8px;
 
     width: 100%;
-    min-height: 56px;
+    min-height: 60px;
 
-    padding: 8px clamp(14px, 3vw, 32px);
+    padding: 10px clamp(18px, 3vw, 36px);
     background-color: var(--header-bg);
     border-bottom: 4px solid var(--outline-color);
     background-image: linear-gradient(180deg, rgba(79,224,203,0.04) 0%, transparent 100%);
@@ -137,13 +170,13 @@ footer {
     flex-shrink: 0;
 
     width: 100%;
-    min-height: 52px;
+    min-height: 56px;
 
-    padding: 10px clamp(14px, 3vw, 32px);
+    padding: 10px clamp(18px, 3vw, 36px);
     background-color: var(--header-bg);
     border-top: 3px solid var(--outline-color);
     box-shadow: 0 -4px 20px rgba(0,0,0,0.3);
-    gap: 12px;
+    gap: 16px;
     margin-top: auto;
 }
 
@@ -188,25 +221,40 @@ nav a {
     cursor: pointer;
     font-weight: 600;
 
-    padding: 7px 16px;
+    padding: 7px 18px;
     border-radius: 999px;
     border: 2px solid transparent;
+    transition: transform .2s, background-color .2s, color .2s, border-color .2s, box-shadow .2s;
 }
 
 nav a:hover {
     border-color: var(--primary-color);
+    transform: translateY(-1px);
 }
 
 .activePage {
     background: var(--primary-color);
-    color: black;
+    color: #000;
     pointer-events: none;
+    position: relative;
+}
+
+.activePage::before {
+    content: ">";
+    position: absolute;
+    left: 6px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-family: 'Courier New', monospace;
+    font-size: 12px;
+    font-weight: 700;
+    opacity: 0.6;
 }
 
 .highlightName {
-    font-weight:bold;
-    color:var(--primary-color);
-    text-shadow:0 0 30px rgba(64,182,221,.69);
+    font-weight: bold;
+    color: var(--primary-color);
+    text-shadow: 0 0 30px rgba(79,224,203,.4);
 }
 
 main, section {
