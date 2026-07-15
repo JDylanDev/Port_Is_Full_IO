@@ -157,6 +157,8 @@ function drawSkillLines() {
 const MIN_CENTER_DIST = 108; // centerCore(63) + skillNode(39) + margin
 
 function enableSkillDragging() {
+  const NODE_DIAMETER = 78; // width/height of .skillNode
+
   document.querySelectorAll(".skillNode").forEach((node) => {
     let dragging = false;
     let offsetX = 0;
@@ -197,6 +199,41 @@ function enableSkillDragging() {
         const angle = Math.atan2(dy, dx);
         x = cx + MIN_CENTER_DIST * Math.cos(angle);
         y = cy + MIN_CENTER_DIST * Math.sin(angle);
+      }
+
+      // === SKILL NODE COLLISION: iterative push-apart resolution ===
+      const otherNodes = parent.querySelectorAll(".skillNode:not(.dragging)");
+      let collided = true;
+      let iterations = 0;
+      const MAX_ITERATIONS = 10;
+
+      while (collided && iterations < MAX_ITERATIONS) {
+        collided = false;
+        iterations++;
+
+        for (const other of otherNodes) {
+          const ox = parseFloat(other.style.left) || 0;
+          const oy = parseFloat(other.style.top) || 0;
+
+          const dx2 = x - ox;
+          const dy2 = y - oy;
+          const dist2 = Math.sqrt(dx2 * dx2 + dy2 * dy2);
+
+          if (dist2 < NODE_DIAMETER && dist2 > 0.001) {
+            // Push the dragged node away along the collision normal
+            const overlap = NODE_DIAMETER - dist2;
+            const nx = dx2 / dist2;
+            const ny = dy2 / dist2;
+
+            x += nx * overlap * 1.01; // tiny extra push to avoid sticking
+            y += ny * overlap * 1.01;
+            collided = true;
+          }
+        }
+
+        // Re-clamp within bounds after pushing
+        x = Math.max(half, Math.min(parent.clientWidth - half, x));
+        y = Math.max(half, Math.min(parent.clientHeight - half, y));
       }
 
       node.style.left = `${x}px`;
@@ -379,7 +416,40 @@ function initMuteToggle() {
 }
 
 /* ---------------------------------------------------------
-   INSPIRATIONS MODAL (draggable)
+   STAR VISIBILITY TOGGLE
+   Shows/hides the falling stars layer, persists via localStorage.
+   --------------------------------------------------------- */
+function initStarToggle() {
+  const btn = document.getElementById("starToggle");
+  if (!btn) return;
+
+  // Restore saved preference (default: visible)
+  const hidden = localStorage.getItem("starsHidden") === "true";
+  if (hidden) {
+    document.querySelectorAll(".cometLayer").forEach((layer) => {
+      layer.classList.add("stars-hidden");
+    });
+    btn.innerHTML = '<i class="fa-solid fa-star" style="opacity:0.35"></i>';
+  }
+
+  btn.addEventListener("click", () => {
+    const layers = document.querySelectorAll(".cometLayer");
+    const isHidden = layers[0]?.classList.contains("stars-hidden");
+
+    layers.forEach((layer) => {
+      layer.classList.toggle("stars-hidden");
+    });
+
+    const nowHidden = !isHidden;
+    localStorage.setItem("starsHidden", nowHidden ? "true" : "false");
+    btn.innerHTML = nowHidden
+      ? '<i class="fa-solid fa-star" style="opacity:0.35"></i>'
+      : '<i class="fa-solid fa-star"></i>';
+  });
+}
+
+/* ---------------------------------------------------------
+   INSPIRATIONS MODAL (draggable, with backdrop overlay)
    --------------------------------------------------------- */
 function initInspoModal() {
   const modal = document.getElementById("inspoModal");
@@ -388,8 +458,17 @@ function initInspoModal() {
   const handle = document.getElementById("inspoHandle");
   if (!modal || !openBtn) return;
 
-  // Open
-  openBtn.addEventListener("click", () => {
+  // Create backdrop overlay
+  let backdrop = document.getElementById("inspoBackdrop");
+  if (!backdrop) {
+    backdrop = document.createElement("div");
+    backdrop.id = "inspoBackdrop";
+    backdrop.className = "inspoBackdrop";
+    document.body.appendChild(backdrop);
+  }
+
+  function openModal() {
+    backdrop.classList.add("open");
     modal.classList.add("open");
     // Let the browser paint, then capture centered position as pixels
     requestAnimationFrame(() => {
@@ -398,11 +477,19 @@ function initInspoModal() {
       modal.style.top = rect.top + "px";
       modal.style.transform = "none";
     });
-  });
+  }
+
+  function closeModal() {
+    backdrop.classList.remove("open");
+    modal.classList.remove("open");
+  }
+
+  // Open
+  openBtn.addEventListener("click", openModal);
 
   // Close
   if (closeBtn) {
-    closeBtn.addEventListener("click", () => modal.classList.remove("open"));
+    closeBtn.addEventListener("click", closeModal);
   }
 
   // Drag
@@ -444,9 +531,7 @@ function initInspoModal() {
   }
 
   // Close on backdrop click
-  modal.addEventListener("click", (e) => {
-    if (e.target === modal) modal.classList.remove("open");
-  });
+  backdrop.addEventListener("click", closeModal);
 }
 
 /* ---------------------------------------------------------
@@ -771,50 +856,162 @@ function openSkillQuiz(core) {
 }
 
 /* ---------------------------------------------------------
-   COMET GENERATOR
-   Replaces 14 hardcoded SVG comets with JS-generated ones.
+   MATRIX RAIN (applied to all pages)
+   Lower opacity, adapts to dark/light mode automatically
+   via CSS custom properties.
+   --------------------------------------------------------- */
+function initMatrixRain() {
+  const canvas = document.getElementById("matrixRain");
+  if (!canvas) return;
+
+  const ctx = canvas.getContext("2d");
+
+  function resizeCanvas() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+  }
+  resizeCanvas();
+  window.addEventListener("resize", resizeCanvas);
+
+  const chars = "アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン0123456789ABCDEF".split("");
+  const fontSize = 11;
+  let columns, drops;
+
+  function initDrops() {
+    columns = Math.floor(canvas.width / fontSize);
+    drops = Array(columns).fill(1);
+  }
+  initDrops();
+
+  // Re-init drops on resize so columns stay in sync
+  const origResize = resizeCanvas;
+  window.removeEventListener("resize", origResize);
+  window.addEventListener("resize", () => {
+    resizeCanvas();
+    initDrops();
+  });
+
+  let lastTime = 0;
+  const interval = 40;
+
+  function isLightMode() {
+    return document.body.classList.contains("light-mode");
+  }
+
+  function drawRain(timestamp) {
+    if (timestamp - lastTime < interval) {
+      requestAnimationFrame(drawRain);
+      return;
+    }
+    lastTime = timestamp;
+
+    const light = isLightMode();
+
+    // Trail fade — slightly heavier for better visibility
+    const fadeAlpha = light ? "0.06" : "0.09";
+    ctx.fillStyle = light
+      ? `rgba(200, 210, 224, ${fadeAlpha})`
+      : `rgba(8, 10, 14, ${fadeAlpha})`;
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    ctx.font = fontSize + "px 'JetBrains Mono', monospace";
+
+    // Increased base opacity for both themes
+    const baseColor = light ? "14, 90, 82" : "79, 224, 203";
+    const globalOpacity = light ? 0.58 : 0.52;
+
+    for (let i = 0; i < drops.length; i++) {
+      const char = chars[Math.floor(Math.random() * chars.length)];
+      const x = i * fontSize;
+      const y = drops[i] * fontSize;
+
+      const brightness = Math.max(0, 1 - (y / canvas.height) * 0.6);
+      ctx.fillStyle = `rgba(${baseColor}, ${brightness * globalOpacity})`;
+      ctx.fillText(char, x, y);
+
+      // Brighten top characters more often for that classic matrix glow
+      if (Math.random() > 0.95) {
+        ctx.fillStyle = `rgba(${baseColor}, ${brightness * globalOpacity * 1.8})`;
+        ctx.fillText(char, x, y);
+      }
+
+      if (y > canvas.height && Math.random() > 0.975) {
+        drops[i] = 0;
+      }
+      drops[i]++;
+    }
+
+    requestAnimationFrame(drawRain);
+  }
+
+  requestAnimationFrame(drawRain);
+}
+
+
+/* ---------------------------------------------------------
+   STAR / COMET GENERATOR
+   Creates a natural-looking field of falling stars with
+   varied sizes, speeds, angles, and delays.
    --------------------------------------------------------- */
 function initComets() {
   const layers = document.querySelectorAll(".cometLayer");
   layers.forEach((layer) => {
-    // Clear any existing comet children (from static HTML fallback)
     layer.innerHTML = "";
 
-    const count = 10;
+    const starCount = 28;
     const svgNS = "http://www.w3.org/2000/svg";
-    const positions = [
-      { left: "1%", top: "-8%", dur: 5.0, delay: 0, w: 36, h: 36, op: 0.8 },
-      { left: "24%", top: "-15%", dur: 7.0, delay: -1.5, w: 32, h: 32, op: 0.8 },
-      { left: "41%", top: "-10%", dur: 6.0, delay: -2.5, w: 32, h: 32, op: 0.8 },
-      { left: "58%", top: "-18%", dur: 8.0, delay: -0.5, w: 32, h: 32, op: 0.8 },
-      { left: "76%", top: "-12%", dur: 6.5, delay: -3.5, w: 32, h: 32, op: 0.8 },
-      { left: "90%", top: "-20%", dur: 9.0, delay: -4.5, w: 32, h: 32, op: 0.8 },
-      { left: "15%", top: "-25%", dur: 7.5, delay: -5.5, w: 32, h: 32, op: 0.8 },
-      { left: "35%", top: "-30%", dur: 10.0, delay: -2.0, w: 25, h: 25, op: 0.5 },
-      { left: "50%", top: "-22%", dur: 5.5, delay: -3.0, w: 28, h: 28, op: 0.6 },
-      { left: "82%", top: "-28%", dur: 8.5, delay: -4.0, w: 26, h: 26, op: 0.5 }
-    ];
 
-    positions.forEach((p) => {
+    // Generate random star positions with natural variation
+    for (let i = 0; i < starCount; i++) {
       const svg = document.createElementNS(svgNS, "svg");
       svg.setAttribute("class", "comet");
       svg.setAttribute("viewBox", "0 0 100 100");
       svg.setAttribute("aria-hidden", "true");
 
+      // Star shape (4-point sparkle for variety)
+      const shape = Math.random() > 0.4
+        ? "M50 0 C55 40 60 45 100 50 C60 55 55 60 50 100 C45 60 40 55 0 50 C40 45 45 40 50 0 Z"
+        : "M50 5 L55 40 L95 50 L55 60 L50 95 L45 60 L5 50 L45 40 Z";
+
       const path = document.createElementNS(svgNS, "path");
-      path.setAttribute("d", "M50 0 C55 40 60 45 100 50 C60 55 55 60 50 100 C45 60 40 55 0 50 C40 45 45 40 50 0 Z");
+      path.setAttribute("d", shape);
       svg.appendChild(path);
 
-      svg.style.left = p.left;
-      svg.style.top = p.top;
-      svg.style.width = p.w + "px";
-      svg.style.height = p.h + "px";
-      svg.style.opacity = p.op;
-      svg.style.animationDuration = p.dur + "s";
-      svg.style.animationDelay = p.delay + "s";
+      // Randomize position (spread across full width, varying heights above viewport)
+      const left = Math.random() * 95 + "%";
+      const topOffset = -Math.random() * 35 - 5; // -5% to -40%
+      const top = topOffset + "%";
+
+      // Randomize size: mix of small (14-20px), medium (22-30px), and large (32-40px)
+      const sizeVariation = Math.random();
+      let size;
+      if (sizeVariation < 0.4) size = 14 + Math.random() * 6;      // small: 14-20
+      else if (sizeVariation < 0.75) size = 22 + Math.random() * 8; // medium: 22-30
+      else size = 32 + Math.random() * 8;                           // large: 32-40
+
+      // Randomize fall duration (4-12 seconds)
+      const duration = 4 + Math.random() * 8;
+
+      // Randomize delay (0 to -10 seconds offset)
+      const delay = -Math.random() * 10;
+
+      // Random opacity (0.4-0.9)
+      const opacity = 0.4 + Math.random() * 0.5;
+
+      // Random rotation offset for natural angle variation
+      const angleOffset = (Math.random() - 0.5) * 20;
+      svg.style.setProperty("--star-angle", angleOffset + "deg");
+
+      svg.style.left = left;
+      svg.style.top = top;
+      svg.style.width = size + "px";
+      svg.style.height = size + "px";
+      svg.style.opacity = opacity;
+      svg.style.animationDuration = duration + "s";
+      svg.style.animationDelay = delay + "s";
 
       layer.appendChild(svg);
-    });
+    }
   });
 }
 
@@ -933,6 +1130,54 @@ function openCodeCracker() {
   buildGame();
 }
 
+/* ---------------------------------------------------------
+   PAGE TRANSITIONS
+   Intercepts nav clicks to fade out before navigating.
+   Fade-in is handled by CSS animation on page load.
+   --------------------------------------------------------- */
+function initPageTransitions() {
+  // Only on main pages (home, skills, projects), not splash
+  if (document.querySelector(".splash")) return;
+
+  const navLinks = document.querySelectorAll("nav a");
+  if (!navLinks.length) return;
+
+  let exitTimer = null;
+
+  navLinks.forEach((link) => {
+    link.addEventListener("click", (e) => {
+      // Don't intercept active page or external links
+      if (link.classList.contains("activePage")) return;
+
+      const href = link.getAttribute("href");
+      if (!href || href.startsWith("#") || href.startsWith("http")) return;
+
+      e.preventDefault();
+
+      // Fade out only the main content area — header & footer stay stable
+      const mainEl = document.querySelector("main");
+      if (mainEl) mainEl.classList.add("page-exiting");
+      document.body.classList.add("page-exiting");
+
+      // Clear any pending navigation from rapid clicks
+      if (exitTimer) clearTimeout(exitTimer);
+      exitTimer = setTimeout(() => {
+        window.location.href = href;
+      }, 200);
+    });
+  });
+
+  // Handle browser back/forward navigation
+  window.addEventListener("pageshow", (e) => {
+    if (e.persisted) {
+      // Page was restored from bfcache — re-trigger enter animation
+      const mainEl = document.querySelector("main");
+      if (mainEl) mainEl.classList.remove("page-exiting");
+      document.body.classList.remove("page-exiting");
+    }
+  });
+}
+
 /* =========================================================
    BOOT
    ========================================================= */
@@ -952,11 +1197,17 @@ document.addEventListener("DOMContentLoaded", () => {
   initThemeToggle();
   initMuteToggle();
 
+  // Star visibility toggle
+  initStarToggle();
+
   // Inspirations modal
   initInspoModal();
 
   // Project search
   initProjectSearch();
+
+  // Matrix rain background (on all pages)
+  initMatrixRain();
 
   // Mark skills page as ready (fade-in to prevent flash)
   const skillsPage = document.querySelector(".skillsPage");
@@ -975,8 +1226,12 @@ document.addEventListener("DOMContentLoaded", () => {
     drawSkillLines();
   });
 
-  // Comets (replaces static HTML duplication)
+  // Page transitions (fade-in on load, fade-out on navigate)
+  initPageTransitions();
+
+  // Falling stars (replaces static HTML duplication)
   initComets();
+
 
   // Minigames
   initMinigame();

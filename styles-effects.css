@@ -4,15 +4,24 @@
    light mode overrides, media queries, scrollbars
    ========================================================= */
 
-/* ===== MATRIX RAIN CANVAS (splash page background) ===== */
+/* ===== MATRIX RAIN CANVAS (applied site-wide) ===== */
 #matrixRain {
     position: fixed;
     inset: 0;
     width: 100%;
     height: 100%;
-    z-index: 1;
-    opacity: 0.55;
+    z-index: -2;
+    opacity: 0.82;
     pointer-events: none;
+    will-change: transform;
+}
+
+html.splash-page #matrixRain {
+    opacity: 0.85;
+}
+
+body.light-mode #matrixRain {
+    opacity: 0.72;
 }
 
 /* ===== CUSTOM SCROLLBARS ===== */
@@ -85,6 +94,19 @@
     overflow:hidden;
     pointer-events:none;
     z-index:-1;
+    will-change: transform;
+    transition: opacity 0.4s ease;
+}
+
+/* When cometLayer is inside the splash (index.html), use the splash stacking context */
+.splash > .cometLayer {
+    z-index: 0;
+    opacity: 0.5;
+}
+
+/* Hidden state for star toggle */
+.cometLayer.stars-hidden {
+    opacity: 0 !important;
 }
 
 .comet {
@@ -102,13 +124,60 @@
 .comet path { fill: currentColor; }
 
 @keyframes cometRain {
-    0% { transform: translate(0, 0) rotate(-45deg); opacity: 0; }
+    0% { transform: translate(0, 0) rotate(calc(-45deg + var(--star-angle, 0deg))); opacity: 0; }
     8% { opacity: 0.9; }
     80% { opacity: 0.9; }
-    100% { transform: translate(0, 115vh) rotate(-45deg); opacity: 0; }
+    100% { transform: translate(0, 115vh) rotate(calc(-45deg + var(--star-angle, 0deg))); opacity: 0; }
 }
 
 /* Comet positions now set dynamically by JS initComets() */
+
+/* ===== PAGE TRANSITIONS (content-only fade, header/footer stay stable) ===== */
+body:not(.splash-page) {
+    opacity: 0;
+    animation: pageEnter 0.45s ease 0.05s forwards;
+}
+
+@keyframes pageEnter {
+    0% { opacity: 0; }
+    100% { opacity: 1; }
+}
+
+/* Exit transition — only the main content area fades out */
+main.page-exiting {
+    animation: pageExit 0.22s ease forwards;
+    pointer-events: none;
+}
+
+body.page-exiting header,
+body.page-exiting footer {
+    opacity: 1;  /* header & footer stay fully visible */
+}
+
+@keyframes pageExit {
+    0% { opacity: 1; transform: translateY(0); }
+    100% { opacity: 0; transform: translateY(-4px); }
+}
+
+/* ===== INSPIRATIONS BACKDROP OVERLAY ===== */
+.inspoBackdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 1999;
+    background: rgba(0, 0, 0, 0.55);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+
+body.light-mode .inspoBackdrop {
+    background: rgba(0, 0, 0, 0.35);
+}
+
+.inspoBackdrop.open {
+    opacity: 1;
+    pointer-events: auto;
+}
 
 /* ===== GLOBAL SCAN LINE OVERLAY ===== */
 body::after {
@@ -349,7 +418,7 @@ html.splash-page, html.splash-page body {
 }
 
 .terminal-line {
-    font-family: 'Courier New', 'Nunito', monospace;
+    font-family: 'JetBrains Mono', 'Courier New', monospace;
     font-size: 13px;
     color: var(--secondary-color);
     opacity: 0;
@@ -542,15 +611,15 @@ body.light-mode .infoPanel h3 {
 }
 
 body.light-mode .skillMap {
-    background-color: #dde3ec;
+    background-color: #bcc8da;
     background-image:
-        linear-gradient(rgba(0,0,0,0.04) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(0,0,0,0.04) 1px, transparent 1px);
+        linear-gradient(rgba(0,0,0,0.06) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,0,0,0.06) 1px, transparent 1px);
 }
 
 body.light-mode .buttonPanel button {
-    color: #e7edf3;
-    border-color: #64748b;
+    color: #0f1928;
+    border-color: #4f5f73;
 }
 
 body.light-mode .tabletFrame {
@@ -558,8 +627,8 @@ body.light-mode .tabletFrame {
 }
 
 body.light-mode .tabletScreen {
-    background: #1a1e2a;
-    border-color: #64748b;
+    background: #171c28;
+    border-color: #4f5f73;
 }
 
 body.light-mode .buttonPanel {
@@ -571,7 +640,7 @@ body.light-mode .infoPanel {
 }
 
 body.light-mode .infoPanel .darkerText {
-    color: #9aa5b1;
+    color: #7d8b9c;
 }
 
 body.light-mode .comet {
@@ -606,7 +675,7 @@ body.light-mode .splash {
 }
 
 body.light-mode .splash-brand h1 .brand-accent {
-    text-shadow: 0 0 30px rgba(13, 148, 136, 0.4);
+    text-shadow: 0 0 30px rgba(10, 122, 112, 0.35);
 }
 
 body.light-mode .enter-btn {
@@ -619,8 +688,30 @@ body.light-mode .enter-btn:hover {
     color: #000;
 }
 
+body.light-mode .splash-decor-left::before,
+body.light-mode .splash-decor-left::after,
+body.light-mode .splash-decor-right::before {
+    color: var(--primary-color);
+}
+
+body.light-mode .inspoBody li i {
+    color: var(--primary-color);
+}
+
 body.light-mode .enter-btn.show {
     animation-name: btnPulseLight;
+}
+
+body.light-mode .heroSection .heroSubtitle {
+    color: var(--secondary-color);
+}
+
+body.light-mode .projectCard p {
+    color: var(--secondary-color);
+}
+
+body.light-mode .libSubtitle {
+    color: var(--secondary-color);
 }
 
 @keyframes btnPulseLight {
@@ -862,7 +953,7 @@ body.light-mode .enter-btn.show {
 }
 
 .sideLabel {
-    font-family: 'Courier New', monospace;
+    font-family: 'JetBrains Mono', 'Courier New', monospace;
     font-size: 7px;
     letter-spacing: 1.5px;
     color: var(--primary-color);
@@ -878,7 +969,7 @@ body.light-mode .enter-btn.show {
     display: flex;
     flex-direction: column;
     gap: 4px;
-    font-family: 'Courier New', monospace;
+    font-family: 'JetBrains Mono', 'Courier New', monospace;
     font-size: 9px;
     color: var(--accent-blue);
     opacity: 0.25;

@@ -149,6 +149,13 @@
     padding: 20px 18px;
 }
 
+/* Info panel always uses light text (sits on dark tablet screen in both themes) */
+.infoPanel,
+.infoPanel h3,
+.infoPanel .loadingScreen {
+    color: #e7edf3;
+}
+
 .infoPanel h3 {
     display: flex;
     align-items: center;
@@ -159,7 +166,7 @@
 }
 
 .infoPanel p {
-    color: var(--text-color);
+    color: #e7edf3;
     line-height: 1.7;
     font-size: 14px;
     text-align: center;
@@ -535,7 +542,7 @@
     color: var(--text-color);
     font-size: 13px;
     min-width: 144px;
-    font-family: 'Nunito', sans-serif;
+    font-family: 'JetBrains Mono', 'Courier New', monospace;
 }
 
 .libSubtitle {
@@ -558,23 +565,13 @@
     position: relative;
 }
 
-.shelfDivider::before {
-    content: ">> ";
-    position: absolute;
-    left: 0;
-    top: 10px;
-    font-family: 'Courier New', monospace;
-    font-size: 13px;
-    color: var(--primary-color);
-    opacity: 0.4;
-    letter-spacing: -1px;
-}
+
 
 .shelfLabel {
     font-size: 18px;
     font-weight: 600;
-    color: var(--text-color);
-    padding-left: 25px;
+    color: var(--text-heading);
+    padding-left: 0px;
 }
 
 .shelfLabel i {
@@ -585,7 +582,7 @@
 .shelfCount {
     color: var(--secondary-color);
     font-size: 11px;
-    font-family: 'Courier New', 'Nunito', monospace;
+    font-family: 'JetBrains Mono', 'Courier New', monospace;
     opacity: 0.6;
 }
 
@@ -667,7 +664,7 @@
     right: -25px;
     background: var(--primary-color);
     color: #000;
-    font-family: 'Courier New', monospace;
+    font-family: 'JetBrains Mono', 'Courier New', monospace;
     font-size: 9px;
     font-weight: 700;
     padding: 3px 28px;
@@ -704,6 +701,7 @@
 .projectCard h4 {
     font-size: 16px;
     margin-bottom: 8px;
+    color: var(--text-heading);
 }
 
 .projectCard p {
@@ -727,7 +725,7 @@
     background: rgba(79, 224, 203, 0.12);
     color: var(--primary-color);
     border: 1px solid rgba(79, 224, 203, 0.2);
-    font-family: 'Courier New', 'Nunito', monospace;
+    font-family: 'JetBrains Mono', 'Courier New', monospace;
     font-size: 10px;
     font-weight: 600;
     letter-spacing: 0.3px;
@@ -778,7 +776,7 @@
 }
 
 .footerStatus {
-    font-family: 'Courier New', monospace;
+    font-family: 'JetBrains Mono', 'Courier New', monospace;
     font-size: 9px;
     color: var(--primary-color);
     opacity: 0.3;
@@ -791,7 +789,7 @@
     display: none;
     position: fixed;
     z-index: 2000;
-    width: min(378px, 90vw);
+    width: min(440px, 88vw);
     background: var(--panel-color);
     border: 3px solid var(--primary-color);
     border-radius: 22px;
@@ -801,6 +799,7 @@
     left: 50%;
     transform: translate(-50%, -50%);
     color: var(--text-color);
+    max-height: min(80vh, 600px);
 }
 
 .inspoModal.open {
@@ -854,11 +853,31 @@
 }
 
 .inspoBody {
-    padding: 20px 22px;
-    max-height: 60vh;
+    padding: 24px 26px;
+    max-height: none;
     overflow-y: auto;
-    font-size: 13px;
+    font-size: 14px;
     line-height: 1.8;
+}
+
+.inspoBody > p {
+    margin-bottom: 14px;
+}
+
+/* Responsive font scaling for larger/smaller screens */
+@media (min-height: 800px) {
+    .inspoBody {
+        font-size: 15px;
+        padding: 28px 32px;
+    }
+}
+
+@media (max-height: 600px) {
+    .inspoBody {
+        font-size: 12px;
+        padding: 16px 18px;
+        line-height: 1.6;
+    }
 }
 
 .inspoBody > p {

@@ -8,7 +8,7 @@
     <link rel="icon" href="assets/favicon.ico">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400..700&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="styles-base.css" />
     <link rel="stylesheet" href="styles-components.css" />
@@ -138,6 +138,7 @@
             <p>No projects match your search...</p>
         </div>
     </main>
+    <canvas id="matrixRain"></canvas>
     <div class="cometLayer"></div>
     <footer> 
         <div class="footerContent">
@@ -148,12 +149,13 @@
                 <button type="button" class="footerBtn" id="muteToggle" aria-label="Toggle mute">
                     <i class="fa-solid fa-volume-high"></i>
                 </button>
+                <button type="button" class="footerBtn" id="starToggle" aria-label="Toggle falling stars">
+                    <i class="fa-solid fa-star"></i>
+                </button>
                 <button type="button" class="footerBtn" id="inspoBtn" aria-label="Inspirations &amp; credits">
                     <i class="fa-solid fa-heart"></i>
                 </button>
             </div>
-            <span class="footerCredit">&copy; 2026 JDylanDev &mdash; Built with <i class="fa-solid fa-heart" style="color: var(--accent-red);"></i> &amp; <i class="fa-solid fa-mug-saucer"></i></span>
-            <span class="footerStatus">[SYS::ACTIVE]</span>
         </div>
     </footer>
 
@@ -171,7 +173,7 @@
                 <li><i class="fa-brands fa-html5"></i> HTML5</li>
                 <li><i class="fa-brands fa-css3-alt"></i> CSS3 (custom properties, animations)</li>
                 <li><i class="fa-brands fa-js"></i> Vanilla JavaScript (no frameworks!)</li>
-                <li><i class="fa-solid fa-font"></i> Fredoka &amp; Nunito from Google Fonts</li>
+                <li><i class="fa-solid fa-font"></i> JetBrains Mono from Google Fonts</li>
                 <li><i class="fa-solid fa-icons"></i> Font Awesome icons</li>
             </ul>
             <hr>

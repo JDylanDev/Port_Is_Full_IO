@@ -29,34 +29,36 @@
     --lib-warm: #1c1812;
     --shadow-color: rgba(0,0,0,0.6);
     --info-panel-bg: #0f131a;
+    --text-heading: #f0f4fa;
 }
 
-/* ===== LIGHT MODE (softer, no-flash version) ===== */
+/* ===== LIGHT MODE (crisp cold slate palette) ===== */
 body.light-mode {
-    --primary-color: #0d9488;
-    --text-color: #1e293b;
-    --secondary-color: #64748b;
-    --bg-color: #dde3ec;
-    --panel-color: #e8eef6;
-    --bezel-color: #94a3b8;
-    --bezel-color-dark: #cbd5e1;
-    --trim-color: #78716c;
-    --buttonpanel-color: #d1d9e6;
-    --screen-color: #e2e8f0;
-    --accent-red: #dc2626;
-    --accent-blue: #3b82f6;
-    --accent-green: #16a34a;
-    --accent-yellow: #ca8a04;
-    --accent-pink: #db2777;
-    --accent-orange: #ea580c;
-    --outline-color: #b8c5d6;
-    --header-bg: #0f172a;
-    --card-bg: #edf2f8;
-    --shelf-border: #cbd5e1;
-    --input-bg: #edf2f8;
-    --lib-warm: #f0ece6;
-    --shadow-color: rgba(0,0,0,0.06);
-    --info-panel-bg: #e2e8f0;
+    --primary-color: #0a7a70;
+    --text-color: #0f1928;
+    --secondary-color: #35485c;
+    --bg-color: #c8d2e0;
+    --panel-color: #d0dae8;
+    --bezel-color: #4f5f73;
+    --bezel-color-dark: #b5c2d4;
+    --trim-color: #4f5462;
+    --buttonpanel-color: #aebbd0;
+    --screen-color: #bcc8da;
+    --accent-red: #c02a2a;
+    --accent-blue: #1a4fc0;
+    --accent-green: #117235;
+    --accent-yellow: #8a5f08;
+    --accent-pink: #b42065;
+    --accent-orange: #a8340c;
+    --outline-color: #8da0b5;
+    --header-bg: #0a1220;
+    --card-bg: #d0dae8;
+    --shelf-border: #9eb0c5;
+    --input-bg: #d0dae8;
+    --lib-warm: #d0d6e2;
+    --shadow-color: rgba(0,0,0,0.12);
+    --info-panel-bg: #bcc8da;
+    --text-heading: #091220;
 }
 
 *, *::before, *::after {
@@ -67,9 +69,10 @@ body.light-mode {
 
 /* === TYPOGRAPHY SCALE === */
 body {
-    font-family: 'Nunito', sans-serif;
+    font-family: 'JetBrains Mono', 'Courier New', monospace;
     font-weight: 400;
     line-height: 1.6;
+    font-size: 14px;
 }
 
 h1, h2, h3, h4, h5, h6,
@@ -83,7 +86,7 @@ h1, h2, h3, h4, h5, h6,
 .minigameSuccess, .quizScore, .quizNext,
 .minigameScore span, .crackerMoves, .libGameBtn,
 .centerCore span {
-    font-family: 'Fredoka', 'Nunito', sans-serif;
+    font-family: 'JetBrains Mono', 'Courier New', monospace;
 }
 
 button, a, .projectCard, .skillNode, .tabletButton, .buttonPanel button, .skillCategoryBar button {
@@ -102,12 +105,12 @@ body {
     display: flex;
     flex-direction: column;
     overflow-x: hidden;
-    overflow-y: auto;
 }
 
-/* ===== GLOBAL CURSOR: DEFAULT (only grab on draggable skill nodes) ===== */
+/* ===== Single viewport scrollbar: html handles page scrolling, body clips horizontal ===== */
 html {
-    overflow-y: scroll;
+    overflow-y: auto;
+    overflow-x: hidden;
 }
 
 html, body {
@@ -205,7 +208,7 @@ footer {
     font-weight: 600;
     letter-spacing: -0.5px;
     font-size: clamp(16px, 1.8vw, 22px);
-    font-family: 'Fredoka', 'Nunito', sans-serif;
+    font-family: 'JetBrains Mono', 'Courier New', monospace;
 }
 
 .imgContainer {
@@ -250,20 +253,9 @@ nav a:hover {
     background: var(--primary-color);
     color: #000;
     pointer-events: none;
-    position: relative;
 }
 
-.activePage::before {
-    content: ">";
-    position: absolute;
-    left: 6px;
-    top: 50%;
-    transform: translateY(-50%);
-    font-family: 'Courier New', monospace;
-    font-size: 12px;
-    font-weight: 700;
-    opacity: 0.6;
-}
+
 
 .highlightName {
     font-weight: bold;
