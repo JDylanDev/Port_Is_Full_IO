@@ -135,14 +135,27 @@ input[type="text"], input[type="search"], input[type="email"], input[type="url"]
     color: var(--secondary-color);
 }
 
+/* Screen-reader-only: visually hidden, accessible to assistive tech */
+.sro {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
 main {
     flex: 1;
-    max-width: 900px;
+    max-width: 730px;
     margin: 0 auto;
-    width: min(92%, 960px);
-    gap: 24px;
-    padding-top: 24px;
-    padding-bottom: 32px;
+    width: min(92%, 730px);
+    gap: 18px;
+    padding-top: 18px;
+    padding-bottom: 25px;
 }
 
 header {
@@ -150,14 +163,14 @@ header {
     align-items: center;
     justify-content: space-between;
     flex-wrap: wrap;
-    row-gap: 8px;
+    row-gap: 6px;
 
     width: 100%;
-    min-height: 60px;
+    min-height: 54px;
 
-    padding: 10px clamp(18px, 3vw, 36px);
+    padding: 7px clamp(14px, 2.4vw, 27px);
     background-color: var(--header-bg);
-    border-bottom: 4px solid var(--outline-color);
+    border-bottom: 3px solid var(--outline-color);
     background-image: linear-gradient(180deg, rgba(79,224,203,0.04) 0%, transparent 100%);
     box-shadow: 0 4px 20px rgba(0,0,0,0.3);
 }
@@ -170,13 +183,13 @@ footer {
     flex-shrink: 0;
 
     width: 100%;
-    min-height: 56px;
+    min-height: 44px;
 
-    padding: 10px clamp(18px, 3vw, 36px);
+    padding: 7px clamp(14px, 2.4vw, 27px);
     background-color: var(--header-bg);
     border-top: 3px solid var(--outline-color);
     box-shadow: 0 -4px 20px rgba(0,0,0,0.3);
-    gap: 16px;
+    gap: 14px;
     margin-top: auto;
 }
 
@@ -186,17 +199,18 @@ footer {
     gap: 10px;
 }
 
-.logoContainer h2 {
+.logoText {
     color: var(--primary-color);
     text-shadow: 0 0 20px rgba(79,224,203,.25);
     font-weight: 600;
     letter-spacing: -0.5px;
-    font-size: clamp(18px, 2vw, 24px);
+    font-size: clamp(16px, 1.8vw, 22px);
+    font-family: 'Fredoka', 'Nunito', sans-serif;
 }
 
 .imgContainer {
-    width: clamp(38px, 3vw, 42px);
-    height: clamp(38px, 3vw, 42px);
+    width: clamp(34px, 2.7vw, 38px);
+    height: clamp(34px, 2.7vw, 38px);
     border-radius: 100%;
     overflow: hidden;
     flex-shrink: 0;
@@ -212,7 +226,7 @@ nav {
     display: flex;
     align-items: center;
     flex-wrap: wrap;
-    gap: clamp(12px, 3vw, 50px);
+    gap: clamp(10px, 2.7vw, 45px);
 }
 
 nav a {
@@ -221,7 +235,7 @@ nav a {
     cursor: pointer;
     font-weight: 600;
 
-    padding: 7px 18px;
+    padding: 6px 16px;
     border-radius: 999px;
     border: 2px solid transparent;
     transition: transform .2s, background-color .2s, color .2s, border-color .2s, box-shadow .2s;

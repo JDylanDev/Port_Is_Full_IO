@@ -97,7 +97,7 @@ function layoutSkillCircle() {
    Draws dashed lines from the EDGE of the center circle
    (not the center point) to each .skillNode.
    --------------------------------------------------------- */
-const CENTER_RADIUS = 70; // half of centerCore (140px)
+const CENTER_RADIUS = 63; // half of centerCore (126px)
 
 function drawSkillLines() {
   document.querySelectorAll(".skillMap").forEach((panel) => {
@@ -154,7 +154,7 @@ function drawSkillLines() {
      • Bounded within the .skillMap
      • Cannot overlap the central core (radius ~70 px)
    --------------------------------------------------------- */
-const MIN_CENTER_DIST = 120; // centerCore(70) + skillNode(43) + margin
+const MIN_CENTER_DIST = 108; // centerCore(63) + skillNode(39) + margin
 
 function enableSkillDragging() {
   document.querySelectorAll(".skillNode").forEach((node) => {
@@ -771,6 +771,54 @@ function openSkillQuiz(core) {
 }
 
 /* ---------------------------------------------------------
+   COMET GENERATOR
+   Replaces 14 hardcoded SVG comets with JS-generated ones.
+   --------------------------------------------------------- */
+function initComets() {
+  const layers = document.querySelectorAll(".cometLayer");
+  layers.forEach((layer) => {
+    // Clear any existing comet children (from static HTML fallback)
+    layer.innerHTML = "";
+
+    const count = 10;
+    const svgNS = "http://www.w3.org/2000/svg";
+    const positions = [
+      { left: "1%", top: "-8%", dur: 5.0, delay: 0, w: 36, h: 36, op: 0.8 },
+      { left: "24%", top: "-15%", dur: 7.0, delay: -1.5, w: 32, h: 32, op: 0.8 },
+      { left: "41%", top: "-10%", dur: 6.0, delay: -2.5, w: 32, h: 32, op: 0.8 },
+      { left: "58%", top: "-18%", dur: 8.0, delay: -0.5, w: 32, h: 32, op: 0.8 },
+      { left: "76%", top: "-12%", dur: 6.5, delay: -3.5, w: 32, h: 32, op: 0.8 },
+      { left: "90%", top: "-20%", dur: 9.0, delay: -4.5, w: 32, h: 32, op: 0.8 },
+      { left: "15%", top: "-25%", dur: 7.5, delay: -5.5, w: 32, h: 32, op: 0.8 },
+      { left: "35%", top: "-30%", dur: 10.0, delay: -2.0, w: 25, h: 25, op: 0.5 },
+      { left: "50%", top: "-22%", dur: 5.5, delay: -3.0, w: 28, h: 28, op: 0.6 },
+      { left: "82%", top: "-28%", dur: 8.5, delay: -4.0, w: 26, h: 26, op: 0.5 }
+    ];
+
+    positions.forEach((p) => {
+      const svg = document.createElementNS(svgNS, "svg");
+      svg.setAttribute("class", "comet");
+      svg.setAttribute("viewBox", "0 0 100 100");
+      svg.setAttribute("aria-hidden", "true");
+
+      const path = document.createElementNS(svgNS, "path");
+      path.setAttribute("d", "M50 0 C55 40 60 45 100 50 C60 55 55 60 50 100 C45 60 40 55 0 50 C40 45 45 40 50 0 Z");
+      svg.appendChild(path);
+
+      svg.style.left = p.left;
+      svg.style.top = p.top;
+      svg.style.width = p.w + "px";
+      svg.style.height = p.h + "px";
+      svg.style.opacity = p.op;
+      svg.style.animationDuration = p.dur + "s";
+      svg.style.animationDelay = p.delay + "s";
+
+      layer.appendChild(svg);
+    });
+  });
+}
+
+/* ---------------------------------------------------------
    CODE CRACKER MINIGAME (projects.html)
    Click the "Play a Game" button in the library header.
    --------------------------------------------------------- */
@@ -926,6 +974,9 @@ document.addEventListener("DOMContentLoaded", () => {
     layoutSkillCircle();
     drawSkillLines();
   });
+
+  // Comets (replaces static HTML duplication)
+  initComets();
 
   // Minigames
   initMinigame();
